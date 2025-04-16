@@ -19,7 +19,7 @@
     ],
     "require": {
         "guzzlehttp/guzzle": "^7.9",
-        "tightenco/collect": "^9"
+        "illuminate/collections": "^12.9"
     },
     "extra": {
         "examples-dir": "example"

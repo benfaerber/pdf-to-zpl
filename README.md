@@ -119,6 +119,8 @@ $converter = new PdfToZplConverter(
 ## Unit Testing
 Run `composer test`. Testing is done via PHP Unit. 
 
+This package works on PHP 8.1 but the test data was generated with 8.4. 
+There will be tiny byte differences between these 2 versions. Use PHP 8.4 (or Github Actions) to use the test suite.
 If you make major changes you may need to regenerate the test data.
 For example modifying scaling code where the output is correct but the test data is outdated.
 Run `composer generate-test-data` and manually verify the images are rendered correctly.

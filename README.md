@@ -22,17 +22,13 @@ use Faerber\PdfToZpl\Settings\ImageScale;
 
 // By default this will convert a 4x6 label
 $converter = new PdfToZplConverter();
-// Or with custom settings:
-$converter = new PdfToZplConverter(new ConverterSettings(
-    dpi: 203,
-));
 
 // Get an array of ZPL commands (1 per page)
 $pages = $converter->convertFromFile("myFile.pdf");
 // Or from a blob:
 $pages = $converter->convertFromBlob(file_get_contents("myFile.pdf"));
 
-foreach ($pages as $index => $page) {
+foreach ($pages as $page) {
     // Each page is a single ZPL statement
     assert(str_starts_with($page, "^XA^GFA,"));
 }

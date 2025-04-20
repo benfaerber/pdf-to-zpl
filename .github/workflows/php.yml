@@ -38,7 +38,6 @@ jobs:
           sudo apt-get install -y ghostscript
           sudo apt install php8.3-imagick
           sudo apt install php8.3-gd
-          php -r "print_r(imagick::queryFormats());"
 
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress

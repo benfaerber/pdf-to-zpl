@@ -36,12 +36,15 @@ foreach ($pages as $page) {
 
 ## Environment Setup:
 
+The minimum version for this package is `8.1`.
+
 Ensure you have Imagick and GD installed using:
 ```
 sudo apt install php8.4-gd
 
 sudo apt install php8.4-imagick
 ```
+(Or whatever PHP Version you are using)
 Then make sure to enable them in `php.ini` (usually enabled by default).
 
 ### Imagick Settings

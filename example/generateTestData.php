@@ -6,6 +6,7 @@ use Faerber\PdfToZpl\LabelImage;
 use Faerber\PdfToZpl\PdfToZplConverter;
 use Faerber\PdfToZpl\Settings\ConverterSettings;
 use Faerber\PdfToZpl\Settings\ImageScale;
+use Faerber\PdfToZpl\Settings\EchoLogger;
 use Faerber\PdfToZpl\ImageToZplConverter;
 
 // Generate Data the unit tests can compare against
@@ -15,11 +16,13 @@ use Faerber\PdfToZpl\ImageToZplConverter;
 // The only reason you would need to regenerate test data is if you've made a
 // change that will change the ZPL structure (ie use a different image library or modify scaling code)
 
+$logger = new EchoLogger();
 $testData = __DIR__ . "/../test_data";
 $testOutput = __DIR__ . "/../test_output";
 
 $settings = new ConverterSettings(
     scale: ImageScale::Cover,
+    logger: $logger,
 );
 $pdfConverter = new PdfToZplConverter($settings);
 $imageConverter = new ImageToZplConverter($settings);
@@ -29,7 +32,7 @@ $landscapePdfConverter = new PdfToZplConverter(new ConverterSettings(
 ));
 
 function downloadPages(array $pages, string $name) {
-    global $testOutput;
+    global $testOutput, $logger;
     foreach ($pages as $index => $page) {
         assert(str_starts_with($page, "^XA^GFA,"));
 
@@ -41,7 +44,7 @@ function downloadPages(array $pages, string $name) {
 
         file_put_contents($zplFilepath, $page);
 
-        echo "Downloading {$name} {$index}\n";
+        $logger->info("Downloading {$name} {$index}");
 
         $image = new LabelImage(zpl: $page);
         $image->saveAs($basePath . ".png");
@@ -53,16 +56,16 @@ function downloadPages(array $pages, string $name) {
 
 
 function convertPdfToPages(string $pdf, string $name, PdfToZplConverter $converter) {
-    echo "Converting PDF {$name}\n";
-    global $testData, $testOutput;
+    global $testData, $testOutput, $logger;
+    $logger->info("Converting PDF {$name}");
     $pdfFile = $testData . "/" . $pdf;
     $pages = $converter->convertFromFile($pdfFile);
     downloadPages($pages, $name);
 }
 
 function convertImageToPages(string $image, string $name) {
-    echo "Converting Image {$name}\n";
-    global $imageConverter, $testData, $testOutput;
+    global $imageConverter, $testData, $testOutput, $logger;
+    $logger->info("Converting Image {$name}");
     $imageFile = $testData . "/" . $image;
     $pages = $imageConverter->convertFromFile($imageFile);
     downloadPages($pages, $name);

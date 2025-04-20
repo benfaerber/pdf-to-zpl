@@ -23,13 +23,16 @@ class PdfToZplConverter implements ZplConverterService {
     // Normal sized PDF: A4, Portrait (8.27 × 11.69 inch)
     // Desired sized PDF: prc 32k, Portrait (3.86 × 6.00 inch)
 
+    /**
+    * @return Collection<int, string>
+    */
     private function pdfToZpls(string $pdfData): Collection {
         return $this->pdfToImages($pdfData)
             ->map(fn ($img) => $this->imageConverter->rawImageToZpl($img));
     }
 
     /** Add a white background to the label */
-    private function background(ImagickStub $img) {
+    private function background(ImagickStub $img): ImagickStub {
         $background = new ImagickStub();
         $pixel = new ImagickPixelStub('white');
         $background->newImage($img->getImageWidth(), $img->getImageHeight(), $pixel->inner());

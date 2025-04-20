@@ -80,7 +80,7 @@ class ImageToZplConverter implements ZplConverterService {
     /** This can just be a string (the first few bytes say if its a GIF or PNG or whatever) */
     public function rawImageToZpl(string $rawImage): string {
         $img = $this->loadFromRawImage($rawImage, $this->settings->imageProcessor);
-        $img->scaleImage($this->settings);
+        $img->scaleImage();
         return $this->convertImageToZpl($img);
     }
 
@@ -110,12 +110,12 @@ class ImageToZplConverter implements ZplConverterService {
         $count = '';
 
         if ($repeat > 400) {
-            $count .= str_repeat('z', floor($repeat / 400));
+            $count .= str_repeat('z', (int)floor($repeat / 400));
             $repeat %= 400;
         }
 
         if ($repeat > 19) {
-            $count .= chr(ord('f') + floor($repeat / 20));
+            $count .= chr(ord('f') + (int)floor($repeat / 20));
             $repeat %= 20;
         }
 

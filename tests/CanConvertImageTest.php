@@ -7,7 +7,7 @@ use Faerber\PdfToZpl\Settings\ConverterSettings;
 use PHPUnit\Framework\TestCase;
 
 final class CanConvertImageTest extends TestCase {
-    public function testCanConvertDuck() {
+    public function testCanConvertDuck(): void {
         $converter = new ImageToZplConverter(new ConverterSettings(verboseLogs: true));
         $pages = $converter->convertFromFile(TestUtils::testData("duck.png"));
         $expectedPageCount = 1;

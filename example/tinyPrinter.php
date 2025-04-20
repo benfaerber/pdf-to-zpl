@@ -11,8 +11,8 @@ use Faerber\PdfToZpl\Settings\ConverterSettings;
 $size = 170;
 $converter = new ImageToZplConverter(
     new ConverterSettings(
-        labelWidth: $size * 1.5,
-        labelHeight: $size * 0.7,
+        labelWidth: (int)($size * 1.5),
+        labelHeight: (int)($size * 0.7),
     )
 );
 

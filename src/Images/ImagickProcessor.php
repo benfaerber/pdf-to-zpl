@@ -40,7 +40,9 @@ class ImagickProcessor implements ImageProcessor {
 
         $this->img->setImageColorspace(ImagickStub::constant("COLORSPACE_RGB"));
         $this->img->setImageFormat('png');
-        $this->img->thresholdImage(0.5 * ImagickStub::getQuantum());
+        // @phpstan-ignore staticMethod.notFound
+        $quantum = ImagickStub::getQuantum();
+        $this->img->thresholdImage(0.5 * $quantum);
         return $this;
     }
 

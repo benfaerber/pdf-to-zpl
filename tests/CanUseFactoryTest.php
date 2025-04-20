@@ -7,7 +7,7 @@ use Faerber\PdfToZpl\ZplConverterFactory;
 use PHPUnit\Framework\TestCase;
 
 final class CanUseFactoryTest extends TestCase {
-    public function testCanUseFactoryForImage() {
+    public function testCanUseFactoryForImage(): void {
         $duck = TestUtils::testData("duck.png");
         $converter = ZplConverterFactory::converterFromFile($duck, new ConverterSettings(verboseLogs: true));
         $pages = $converter->convertFromFile($duck);

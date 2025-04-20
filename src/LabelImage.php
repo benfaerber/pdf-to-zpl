@@ -62,7 +62,7 @@ class LabelImage {
     }
 
     /** A raw binary data of the image. Can be saved to disk or uploaded */
-    public function asRaw() {
+    public function asRaw(): string {
         return $this->image;
     }
 
@@ -77,7 +77,7 @@ class LabelImage {
     }
 
     /** Save the image to disk */
-    public function saveAs(string $filepath) {
+    public function saveAs(string $filepath): void {
         file_put_contents($filepath, $this->asRaw());
     }
 }

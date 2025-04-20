@@ -14,7 +14,7 @@ class BenchmarkPdfConversion {
         return __DIR__ . "/../test_data/{$name}";
     }
 
-    private function convertFile(string $name, ConverterSettings $settings) {
+    private function convertFile(string $name, ConverterSettings $settings): void {
         $converter = new ImageToZplConverter(
             $settings
         );
@@ -25,14 +25,14 @@ class BenchmarkPdfConversion {
     /**
      * @Subject
      */
-    public function doConvertGif() {
+    public function doConvertGif(): void {
         $this->convertFile("ups-label-as-gif.gif", new ConverterSettings());
     }
 
     /**
      * @Subject
      */
-    public function doConvertPng() {
+    public function doConvertPng(): void {
         $this->convertFile("ups-label-as-png.png", new ConverterSettings());
     }
 
@@ -40,7 +40,7 @@ class BenchmarkPdfConversion {
     /**
      * @Subject
      */
-    public function doConvertDuck() {
+    public function doConvertDuck(): void {
         $this->convertFile("duck.png", new ConverterSettings());
     }
 }

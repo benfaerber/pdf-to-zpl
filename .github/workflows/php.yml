@@ -17,10 +17,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Configure Env
-      run: |
-        echo ::set-output name=status::$status
-
     - name: Validate composer.json and composer.lock
       run: composer validate
 
@@ -38,13 +34,15 @@ jobs:
           sudo apt-get install -y ghostscript
           sudo apt install php8.3-imagick
           sudo apt install php8.3-gd
-          php -r "print_r(imagick::queryFormats());"
 
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress
     
     - name: Verify Formatting
       run: ./vendor/bin/php-cs-fixer check
+
+    - name: Verify phpstan 
+      run: composer analyze 
 
     - name: Configure Imagick Permissions 
       run: sudo cp -f ./.github/github-actions-imagick-config.xml /etc/ImageMagick-6/policy.xml

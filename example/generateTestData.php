@@ -6,6 +6,7 @@ use Faerber\PdfToZpl\LabelImage;
 use Faerber\PdfToZpl\PdfToZplConverter;
 use Faerber\PdfToZpl\Settings\ConverterSettings;
 use Faerber\PdfToZpl\Settings\ImageScale;
+use Faerber\PdfToZpl\Settings\EchoLogger;
 use Faerber\PdfToZpl\ImageToZplConverter;
 
 // Generate Data the unit tests can compare against
@@ -15,11 +16,13 @@ use Faerber\PdfToZpl\ImageToZplConverter;
 // The only reason you would need to regenerate test data is if you've made a
 // change that will change the ZPL structure (ie use a different image library or modify scaling code)
 
+$logger = new EchoLogger();
 $testData = __DIR__ . "/../test_data";
 $testOutput = __DIR__ . "/../test_output";
 
 $settings = new ConverterSettings(
     scale: ImageScale::Cover,
+    logger: $logger,
 );
 $pdfConverter = new PdfToZplConverter($settings);
 $imageConverter = new ImageToZplConverter($settings);
@@ -28,8 +31,9 @@ $landscapePdfConverter = new PdfToZplConverter(new ConverterSettings(
     rotateDegrees: 90,
 ));
 
-function downloadPages(array $pages, string $name) {
-    global $testOutput;
+/** @param string[] $pages */
+function downloadPages(array $pages, string $name): void {
+    global $testOutput, $logger;
     foreach ($pages as $index => $page) {
         assert(str_starts_with($page, "^XA^GFA,"));
 
@@ -41,7 +45,7 @@ function downloadPages(array $pages, string $name) {
 
         file_put_contents($zplFilepath, $page);
 
-        echo "Downloading {$name} {$index}\n";
+        $logger->info("Downloading {$name} {$index}");
 
         $image = new LabelImage(zpl: $page);
         $image->saveAs($basePath . ".png");
@@ -52,43 +56,43 @@ function downloadPages(array $pages, string $name) {
 }
 
 
-function convertPdfToPages(string $pdf, string $name, PdfToZplConverter $converter) {
-    echo "Converting PDF {$name}\n";
-    global $testData, $testOutput;
+function convertPdfToPages(string $pdf, string $name, PdfToZplConverter $converter): void {
+    global $testData, $testOutput, $logger;
+    $logger->info("Converting PDF {$name}");
     $pdfFile = $testData . "/" . $pdf;
     $pages = $converter->convertFromFile($pdfFile);
     downloadPages($pages, $name);
 }
 
-function convertImageToPages(string $image, string $name) {
-    echo "Converting Image {$name}\n";
-    global $imageConverter, $testData, $testOutput;
+function convertImageToPages(string $image, string $name): void {
+    global $imageConverter, $testData, $testOutput, $logger;
+    $logger->info("Converting Image {$name}");
     $imageFile = $testData . "/" . $image;
     $pages = $imageConverter->convertFromFile($imageFile);
     downloadPages($pages, $name);
 }
 
 
-function convertEndiciaLabel() {
+function convertEndiciaLabel(): void {
     global $pdfConverter;
     convertPdfToPages("endicia-shipping-label.pdf", "expected_label", $pdfConverter);
 }
 
-function convertDonkeyPdf() {
+function convertDonkeyPdf(): void {
     global $pdfConverter;
     convertPdfToPages("donkey.pdf", "expected_donkey", $pdfConverter);
 }
 
-function convertLandscapePdf() {
+function convertLandscapePdf(): void {
     global $landscapePdfConverter;
     convertPdfToPages("usps-label-landscape.pdf", "expected_usps_landscape", $landscapePdfConverter);
 }
 
-function convertDuckImage() {
+function convertDuckImage(): void {
     convertImageToPages("duck.png", "expected_duck");
 }
 
-function purgeOld() {
+function purgeOld(): void {
     global $testOutput;
     foreach (scandir($testOutput) as $file) {
         if (str_starts_with($file, ".")) {

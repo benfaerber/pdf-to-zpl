@@ -19,7 +19,7 @@ interface ImageProcessor {
     /**
     * Read an image from binary data stored in a string
     */
-    public function readBlob(string $data);
+    public function readBlob(string $data): static;
     /**
     * Apply the proper scaling mentioned in {@see ConverterSettings}
     */

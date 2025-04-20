@@ -11,6 +11,7 @@ class TestUtils {
         return __DIR__ . "/../test_output/{$filename}";
     }
 
+    /** @return string[] */
     public static function loadExpectedPages(string $name, int $pageCount): array {
         return array_map(
             fn ($index) => file_get_contents(TestUtils::testOutput("{$name}_{$index}.zpl.txt")),

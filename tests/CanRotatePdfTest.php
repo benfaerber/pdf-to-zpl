@@ -7,7 +7,7 @@ use Faerber\PdfToZpl\Settings\ConverterSettings;
 use PHPUnit\Framework\TestCase;
 
 final class CanRotatePdfTest extends TestCase {
-    public function testCanRotateLandscapePdf() {
+    public function testCanRotateLandscapePdf(): void {
         $converter = new PdfToZplConverter(new ConverterSettings(
             verboseLogs: true,
             rotateDegrees: 90,

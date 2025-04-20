@@ -46,6 +46,9 @@ jobs:
     - name: Verify Formatting
       run: ./vendor/bin/php-cs-fixer check
 
+    - name: Verify phpstan 
+      run: composer analyze 
+
     - name: Configure Imagick Permissions 
       run: sudo cp -f ./.github/github-actions-imagick-config.xml /etc/ImageMagick-6/policy.xml
 

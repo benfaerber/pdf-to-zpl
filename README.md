@@ -17,8 +17,15 @@ composer require faerber/pdf-to-zpl
 ```php
 <?php
 use Faerber\PdfToZpl\PdfToZplConverter;
+use Faerber\PdfToZpl\Settings\ConverterSettings;
+use Faerber\PdfToZpl\Settings\ImageScale;
 
+// By default this will convert a 4x6 label
 $converter = new PdfToZplConverter();
+// Or with custom settings:
+$converter = new PdfToZplConverter(new ConverterSettings(
+    dpi: 203,
+));
 
 // Get an array of ZPL commands (1 per page)
 $pages = $converter->convertFromFile("myFile.pdf");
@@ -39,24 +46,7 @@ sudo apt install php8.4-gd
 
 sudo apt install php8.4-imagick
 ```
-Then make sure to enable them in `php.ini`.
-
-
-This library can work with only Imagick but GD is recommended because it's a lot faster (see [benchmarks](./.phpbench/html/index.html) for more details)! 
-If you would like to only use Imagick use these settings:
-```php
-<?php
-
-use Faerber\PdfToZpl\PdfToZplConverter;
-use Faerber\PdfToZpl\Settings\ConverterSettings;
-use Faerber\PdfToZpl\Images\ImageProcessorOption;
-
-$converter = new PdfToZplConverter(
-    new ConverterSettings(
-        imageProcessorOption: ImageProcessorOption::Imagick,
-    )
-);
-```
+Then make sure to enable them in `php.ini` (usually enabled by default).
 
 ### Imagick Settings
 You may need to enable PDF permission in your Imagick settings.
@@ -113,6 +103,22 @@ $labelImage = new LabelImage(
 $labelImage->saveAs("my_label.png");
 ```
 
+## Using without GD (no installs needed)
+This library can work with only Imagick but GD is recommended because it's a lot faster (see [benchmarks](./.phpbench/html/index.html) for more details)! 
+If you would like to only use Imagick use these settings:
+```php
+<?php
+
+use Faerber\PdfToZpl\PdfToZplConverter;
+use Faerber\PdfToZpl\Settings\ConverterSettings;
+use Faerber\PdfToZpl\Images\ImageProcessorOption;
+
+$converter = new PdfToZplConverter(
+    new ConverterSettings(
+        imageProcessorOption: ImageProcessorOption::Imagick,
+    )
+);
+```
 
 ## Unit Testing
 Testing is done via PHP Unit. Run `composer test`.

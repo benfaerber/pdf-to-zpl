@@ -117,17 +117,17 @@ $converter = new PdfToZplConverter(
 ```
 
 ## Unit Testing
-Testing is done via PHP Unit. Run `composer test`.
+Run `composer test`. Testing is done via PHP Unit. 
 
 If you make major changes you may need to regenerate the test data.
 For example modifying scaling code where the output is correct but the test data is outdated.
 Run `composer generate-test-data` and manually verify the images are rendered correctly.
 
 ## Benchmarking
-Benchmarking is done via `phpbench`. Run `composer benchmark`.
+Run `composer benchmark`. Benchmarking is done via `phpbench`. 
 
 ## Formatting
-Formatting is done via `php-cs-fixer`. Run `composer format`.
+Run `composer format`. Formatting is done via `php-cs-fixer`. 
 
 ## How does this work?
 1. Loads the PDF and render each page as image

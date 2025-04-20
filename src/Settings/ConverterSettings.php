@@ -4,6 +4,7 @@ namespace Faerber\PdfToZpl\Settings;
 
 use Exception;
 use Faerber\PdfToZpl\Images\{ImageProcessorOption, ImageProcessor};
+use Faerber\PdfToZpl\PdfToZplException;
 use Psr\Log\LoggerInterface;
 
 /** Settings for the PDF to ZPL conversion */
@@ -60,17 +61,17 @@ class ConverterSettings {
 
     private function verifyDependencies(ImageProcessorOption $option): void {
         if (! extension_loaded('gd') && $option === ImageProcessorOption::Gd) {
-            throw new Exception("pdf-to-zpl: You must install the GD image library or change imageProcessorOption to ImageProcessOption::Imagick");
+            throw new PdfToZplException("You must install the GD image library or change imageProcessorOption to ImageProcessOption::Imagick");
         }
 
         if (! extension_loaded('imagick')) {
-            throw new Exception("pdf-to-zpl: You must install the Imagick image library");
+            throw new PdfToZplException("You must install the Imagick image library");
         }
 
         /** @disregard intelephense(P1009) */
         $formats = \imagick::queryFormats();
         if (! array_search("PDF", $formats)) {
-            throw new Exception("pdf-to-zpl: Format PDF not allowed for Imagick (try installing ghostscript: sudo apt-get install -y ghostscript)");
+            throw new PdfToZplException("Format PDF not allowed for Imagick (try installing ghostscript: sudo apt-get install -y ghostscript)");
         }
     }
 

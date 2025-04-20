@@ -25,6 +25,6 @@ class ZplConverterFactory {
                 return new $service($settings);
             }
         }
-        throw new Exception("No converter for {$ext} files!");
+        throw new PdfToZplException("No converter for {$ext} files!");
     }
 }

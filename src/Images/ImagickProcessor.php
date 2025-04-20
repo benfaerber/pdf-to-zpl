@@ -5,6 +5,7 @@ namespace Faerber\PdfToZpl\Images;
 use Exception;
 use Faerber\PdfToZpl\ImagickPixelStub;
 use Faerber\PdfToZpl\ImagickStub;
+use Faerber\PdfToZpl\PdfToZplException;
 use Faerber\PdfToZpl\Settings\ConverterSettings;
 
 class ImagickProcessor implements ImageProcessor {
@@ -35,7 +36,7 @@ class ImagickProcessor implements ImageProcessor {
     public function readBlob(string $data): static {
         $blob = $this->img->readImageBlob($data);
         if (! $blob) {
-            throw new Exception("Cannot load!");
+            throw new PdfToZplException("Cannot load!");
         }
 
         $this->img->setImageColorspace(ImagickStub::constant("COLORSPACE_RGB"));

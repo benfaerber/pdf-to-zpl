@@ -91,7 +91,7 @@ class ImageToZplConverter implements ZplConverterService {
     public function convertFromFile(string $filepath): array {
         $rawData = @file_get_contents($filepath);
         if (! $rawData) {
-            throw new Exception("Invalid file {$filepath}");
+            throw new PdfToZplException("Invalid file {$filepath}");
         }
         return $this->convertFromBlob($rawData);
     }

@@ -2,8 +2,7 @@
 
 namespace Faerber\PdfToZpl\Images;
 
-use Exception;
-use Faerber\PdfToZpl\ImagickStub;
+use Faerber\PdfToZpl\PdfToZplException;
 use Faerber\PdfToZpl\Settings\ConverterSettings;
 use GdImage;
 
@@ -30,7 +29,7 @@ class GdProcessor implements ImageProcessor {
     public function readBlob(string $data): static {
         $this->img = imagecreatefromstring($data);
         if (! $this->img) {
-            throw new Exception("Failure!");
+            throw new PdfToZplException("Failure!");
         }
 
         imagepalettetotruecolor($this->img);

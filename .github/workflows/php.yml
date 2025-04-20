@@ -17,10 +17,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Configure Env
-      run: |
-        echo ::set-output name=status::$status
-
     - name: Validate composer.json and composer.lock
       run: composer validate
 

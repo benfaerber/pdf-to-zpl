@@ -48,7 +48,7 @@ class LabelImage {
         ]);
 
         if ($response->getStatusCode() !== 200) {
-            throw new Exception("Failed to Download Image!");
+            throw new PdfToZplException("Failed to Download Image!");
         }
 
         return (string)$response->getBody();

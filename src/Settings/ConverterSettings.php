@@ -4,6 +4,7 @@ namespace Faerber\PdfToZpl\Settings;
 
 use Exception;
 use Faerber\PdfToZpl\Images\{ImageProcessorOption, ImageProcessor};
+use Psr\Log\LoggerInterface;
 
 /** Settings for the PDF to ZPL conversion */
 class ConverterSettings {
@@ -31,6 +32,7 @@ class ConverterSettings {
     public ImageProcessor $imageProcessor;
 
     public bool $verboseLogs;
+    public LoggerInterface $logger;
 
     public function __construct(
         ImageScale $scale = ImageScale::Cover,
@@ -41,6 +43,7 @@ class ConverterSettings {
         ImageProcessorOption $imageProcessorOption = ImageProcessorOption::Gd,
         int|null $rotateDegrees = null,
         bool $verboseLogs = false,
+        LoggerInterface|null $logger = null,
     ) {
         $this->scale = $scale;
         $this->dpi = $dpi;
@@ -49,6 +52,7 @@ class ConverterSettings {
         $this->imageFormat = $imageFormat;
         $this->rotateDegrees = $rotateDegrees;
         $this->verboseLogs = $verboseLogs;
+        $this->logger = $logger ?: new EchoLogger();
         $this->verifyDependencies($imageProcessorOption);
 
         $this->imageProcessor = $imageProcessorOption->processor($this);
@@ -79,9 +83,7 @@ class ConverterSettings {
             return;
         }
         foreach ($messages as $message) {
-            echo "[pdf-to-zpl logs]: ";
-            echo $message;
-            echo "\n";
+            $this->logger->debug("[pdf-to-zpl] " . $message);
         }
     }
 }

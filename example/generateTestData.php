@@ -31,7 +31,8 @@ $landscapePdfConverter = new PdfToZplConverter(new ConverterSettings(
     rotateDegrees: 90,
 ));
 
-function downloadPages(array $pages, string $name) {
+/** @param string[] $pages */
+function downloadPages(array $pages, string $name): void {
     global $testOutput, $logger;
     foreach ($pages as $index => $page) {
         assert(str_starts_with($page, "^XA^GFA,"));
@@ -55,7 +56,7 @@ function downloadPages(array $pages, string $name) {
 }
 
 
-function convertPdfToPages(string $pdf, string $name, PdfToZplConverter $converter) {
+function convertPdfToPages(string $pdf, string $name, PdfToZplConverter $converter): void {
     global $testData, $testOutput, $logger;
     $logger->info("Converting PDF {$name}");
     $pdfFile = $testData . "/" . $pdf;
@@ -63,7 +64,7 @@ function convertPdfToPages(string $pdf, string $name, PdfToZplConverter $convert
     downloadPages($pages, $name);
 }
 
-function convertImageToPages(string $image, string $name) {
+function convertImageToPages(string $image, string $name): void {
     global $imageConverter, $testData, $testOutput, $logger;
     $logger->info("Converting Image {$name}");
     $imageFile = $testData . "/" . $image;
@@ -72,26 +73,26 @@ function convertImageToPages(string $image, string $name) {
 }
 
 
-function convertEndiciaLabel() {
+function convertEndiciaLabel(): void {
     global $pdfConverter;
     convertPdfToPages("endicia-shipping-label.pdf", "expected_label", $pdfConverter);
 }
 
-function convertDonkeyPdf() {
+function convertDonkeyPdf(): void {
     global $pdfConverter;
     convertPdfToPages("donkey.pdf", "expected_donkey", $pdfConverter);
 }
 
-function convertLandscapePdf() {
+function convertLandscapePdf(): void {
     global $landscapePdfConverter;
     convertPdfToPages("usps-label-landscape.pdf", "expected_usps_landscape", $landscapePdfConverter);
 }
 
-function convertDuckImage() {
+function convertDuckImage(): void {
     convertImageToPages("duck.png", "expected_duck");
 }
 
-function purgeOld() {
+function purgeOld(): void {
     global $testOutput;
     foreach (scandir($testOutput) as $file) {
         if (str_starts_with($file, ".")) {

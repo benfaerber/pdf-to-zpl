@@ -58,7 +58,7 @@ class ConverterSettings {
         $this->imageProcessor = $imageProcessorOption->processor($this);
     }
 
-    private function verifyDependencies(ImageProcessorOption $option) {
+    private function verifyDependencies(ImageProcessorOption $option): void {
         if (! extension_loaded('gd') && $option === ImageProcessorOption::Gd) {
             throw new Exception("pdf-to-zpl: You must install the GD image library or change imageProcessorOption to ImageProcessOption::Imagick");
         }
@@ -74,11 +74,11 @@ class ConverterSettings {
         }
     }
 
-    public static function default() {
+    public static function default(): self {
         return new self();
     }
 
-    public function log(...$messages) {
+    public function log(mixed ...$messages): void {
         if (! $this->verboseLogs) {
             return;
         }

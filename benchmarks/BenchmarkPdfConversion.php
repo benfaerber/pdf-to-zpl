@@ -13,7 +13,7 @@ class BenchmarkPdfConversion {
         return __DIR__ . "/../test_data/{$name}";
     }
 
-    private function convertFile(string $name, ConverterSettings $settings) {
+    private function convertFile(string $name, ConverterSettings $settings): void {
         $converter = new PdfToZplConverter(
             $settings
         );
@@ -21,8 +21,8 @@ class BenchmarkPdfConversion {
         $converter->convertFromFile($testPath);
     }
 
-    private function convertFileWithProcessor(string $name, ImageProcessorOption $imageProcessor) {
-        return $this->convertFile($name, new ConverterSettings(
+    private function convertFileWithProcessor(string $name, ImageProcessorOption $imageProcessor): void {
+        $this->convertFile($name, new ConverterSettings(
             imageProcessorOption: $imageProcessor,
         ));
     }
@@ -31,42 +31,42 @@ class BenchmarkPdfConversion {
      * Verify phpbench is working properly
      * @Subject
      */
-    public function doAdd() {
+    public function doAdd(): void {
         $b = 1 + 2;
     }
 
     /**
      * @Subject
      */
-    public function doConvertLabelImagick() {
+    public function doConvertLabelImagick(): void {
         $this->convertFileWithProcessor("endicia-shipping-label.pdf", ImageProcessorOption::Imagick);
     }
 
     /**
      * @Subject
      */
-    public function doConvertLabelGd() {
+    public function doConvertLabelGd(): void {
         $this->convertFileWithProcessor("endicia-shipping-label.pdf", ImageProcessorOption::Gd);
     }
 
     /**
      * @Subject
      */
-    public function doConvertDonkeyImagick() {
+    public function doConvertDonkeyImagick(): void {
         $this->convertFileWithProcessor("donkey.pdf", ImageProcessorOption::Imagick);
     }
 
     /**
      * @Subject
      */
-    public function doConvertDonkeyGd() {
+    public function doConvertDonkeyGd(): void {
         $this->convertFileWithProcessor("donkey.pdf", ImageProcessorOption::Gd);
     }
 
     /**
      * @Subject
      */
-    public function doConvertAmericaImagick() {
+    public function doConvertAmericaImagick(): void {
         $this->convertFileWithProcessor("america.pdf", ImageProcessorOption::Imagick);
     }
 
@@ -74,14 +74,14 @@ class BenchmarkPdfConversion {
     /**
      * @Subject
      */
-    public function doConvertAmericaGd() {
+    public function doConvertAmericaGd(): void {
         $this->convertFileWithProcessor("america.pdf", ImageProcessorOption::Gd);
     }
 
     /**
      * @Subject
      */
-    public function doConvertTinyLabel() {
+    public function doConvertTinyLabel(): void {
         $this->convertFile("endicia-shipping-label.pdf", new ConverterSettings(
             labelWidth: 150,
             labelHeight: 100,

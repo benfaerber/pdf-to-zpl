@@ -14,7 +14,7 @@ use Stringable;
 abstract class Stub implements Stringable {
     private mixed $inner;
 
-    public function __construct(...$args) {
+    public function __construct(mixed ...$args) {
         $klass = static::className();
         $this->inner = new $klass(...$args);
     }
@@ -23,7 +23,7 @@ abstract class Stub implements Stringable {
     abstract public static function className(): string;
 
     /** Look up a constant */
-    public static function constant(string $name) {
+    public static function constant(string $name): mixed {
         $klass = static::className();
         $reflector = new ReflectionClass(
             new $klass()
@@ -31,20 +31,22 @@ abstract class Stub implements Stringable {
         return $reflector->getConstant($name);
     }
 
-    public function __call($name, $args) {
+    /** @param mixed[] $args */
+    public function __call(string $name, array $args): mixed {
         return $this->inner->{$name}(...$args);
     }
 
-    public static function __callStatic($name, $args) {
+    /** @param mixed[] $args */
+    public static function __callStatic(string $name, array $args): mixed {
         $klass = static::className();
         return $klass::{$name}(...$args);
     }
 
-    public function __get($name) {
+    public function __get(string $name): mixed {
         return $this->inner->{$name};
     }
 
-    public function __set($name, $value) {
+    public function __set(string $name, mixed $value): void {
         $this->inner->{$name} = $value;
     }
 
@@ -52,7 +54,7 @@ abstract class Stub implements Stringable {
         return $this->inner->__toString();
     }
 
-    public function inner() {
+    public function inner(): mixed {
         return $this->inner;
     }
 }

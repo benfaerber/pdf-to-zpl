@@ -41,8 +41,6 @@ jobs:
     - name: Install Imagick and GD 
       run: |
           sudo apt-get install -y ghostscript
-          sudo apt install php8.4-imagick
-          sudo apt install php8.4-gd
 
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress

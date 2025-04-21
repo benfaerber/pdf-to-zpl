@@ -37,7 +37,7 @@
             "./vendor/bin/phpstan analyze -c ./phpstan.neon"
         ],
         "verify": [
-            "./vendor/bin/php-cs-fixer check",
+            "PHP_CS_FIXER_IGNORE_ENV=true ./vendor/bin/php-cs-fixer check",
             "composer analyze",
             "composer test"
         ],

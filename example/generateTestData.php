@@ -19,8 +19,7 @@ use Faerber\PdfToZpl\ImageToZplConverter;
 
 
 
-class GenerateTestData
-{
+class GenerateTestData {
     private EchoLogger $logger;
     private string $testData;
     private string $testOutput;
@@ -29,8 +28,7 @@ class GenerateTestData
     private ImageToZplConverter $imageConverter;
     private PdfToZplConverter $landscapePdfConverter;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->logger = new EchoLogger();
         $this->testData = __DIR__ . "/../test_data";
         $this->testOutput = __DIR__ . "/../test_output";
@@ -48,8 +46,7 @@ class GenerateTestData
     }
 
     /** @param string[] $pages */
-    function downloadPages(array $pages, string $name): void
-    {
+    function downloadPages(array $pages, string $name): void {
         foreach ($pages as $index => $page) {
             assert(str_starts_with($page, "^XA^GFA,"));
 
@@ -71,16 +68,14 @@ class GenerateTestData
         }
     }
 
-    function convertPdfToPages(string $pdf, string $name, PdfToZplConverter $converter): void
-    {
+    function convertPdfToPages(string $pdf, string $name, PdfToZplConverter $converter): void {
         $this->logger->info("Converting PDF {$name}");
         $pdfFile = $this->testData . "/" . $pdf;
         $pages = $converter->convertFromFile($pdfFile);
         $this->downloadPages($pages, $name);
     }
 
-    function convertImageToPages(string $image, string $name): void
-    {
+    function convertImageToPages(string $image, string $name): void {
         $this->logger->info("Converting Image {$name}");
         $imageFile = $this->testData . "/" . $image;
         $pages = $this->imageConverter->convertFromFile($imageFile);
@@ -88,28 +83,23 @@ class GenerateTestData
     }
 
 
-    function convertEndiciaLabel(): void
-    {
+    function convertEndiciaLabel(): void {
         $this->convertPdfToPages("endicia-shipping-label.pdf", "expected_label", $this->pdfConverter);
     }
 
-    function convertDonkeyPdf(): void
-    {
+    function convertDonkeyPdf(): void {
         $this->convertPdfToPages("donkey.pdf", "expected_donkey", $this->pdfConverter);
     }
 
-    function convertLandscapePdf(): void
-    {
+    function convertLandscapePdf(): void {
         $this->convertPdfToPages("usps-label-landscape.pdf", "expected_usps_landscape", $this->landscapePdfConverter);
     }
 
-    function convertDuckImage(): void
-    {
+    function convertDuckImage(): void {
         $this->convertImageToPages("duck.png", "expected_duck");
     }
 
-    function purgeOld(): void
-    {
+    function purgeOld(): void {
         $this->logger->info("Deleting old info!"); 
         foreach (scandir($this->testOutput) as $file) {
             if (str_starts_with($file, ".")) {

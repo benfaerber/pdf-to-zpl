@@ -44,7 +44,7 @@ class PdfToZplConverter implements ZplConverterService {
             $img->getImageFormat()
         );
 
-        $background->compositeImage($img, ImagickStub::constant('COMPOSITE_OVER'), 0, 0);
+        $background->compositeImage($img, Imagick::COMPOSITE_OVER, 0, 0);
 
         return $background;
     }

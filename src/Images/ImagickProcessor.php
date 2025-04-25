@@ -2,11 +2,11 @@
 
 namespace Faerber\PdfToZpl\Images;
 
-use Exception;
 use Faerber\PdfToZpl\ImagickPixelStub;
 use Faerber\PdfToZpl\PdfToZplException;
 use Faerber\PdfToZpl\Settings\ConverterSettings;
 use Imagick;
+use ImagickPixel;
 
 class ImagickProcessor implements ImageProcessor {
     private Imagick $img;
@@ -65,7 +65,7 @@ class ImagickProcessor implements ImageProcessor {
     /** Perform any necessary rotate for landscape PDFs */
     public function rotateImage(): static {
         if ($this->settings->rotateDegrees) {
-            $this->img->rotateImage((new ImagickPixelStub("white"))->inner(), $this->settings->rotateDegrees);
+            $this->img->rotateImage(new ImagickPixel("white"), $this->settings->rotateDegrees);
         }
         return $this;
     }

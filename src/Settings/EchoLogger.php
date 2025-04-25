@@ -2,7 +2,9 @@
 
 namespace Faerber\PdfToZpl\Settings;
 
+use Exception;
 use Psr\Log\LoggerInterface;
+use Stringable;
 
 /** 
  * A simple default logger for those who just want
@@ -10,6 +12,9 @@ use Psr\Log\LoggerInterface;
 */
 class EchoLogger implements LoggerInterface {
     public function log($level, string|\Stringable $message, array $context = []): void {
+        if ($level instanceof Stringable || ! is_string($level)) {
+            throw new Exception("Level must be a string!");
+        } 
         echo "[{$level}] {$message}" . ($context ? " (Context: " . json_encode($context) . ")" : "") . "\n";
     }
 

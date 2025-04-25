@@ -22,7 +22,7 @@ final class CanConvertPdfTest extends TestCase {
         );
 
         // Should match the previously generated data
-        $this->assertTrue($utils->isZplSimilar(
+        $this->assertGreaterThan(95, $utils->getPercentSimilar(
             $pages,
             $utils->loadExpectedPages("expected_label", count($pages)),
             "can convert endicia pdf"
@@ -42,7 +42,7 @@ final class CanConvertPdfTest extends TestCase {
         );
 
         // Should match the previously generated data
-        $this->assertTrue($utils->isZplSimilar(
+        $this->assertGreaterThan(95, $utils->getPercentSimilar(
             $pages,
             $utils->loadExpectedPages("expected_donkey", count($pages)),
             "can convert donkey",

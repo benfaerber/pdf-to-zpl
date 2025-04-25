@@ -21,7 +21,7 @@ final class CanUseFactoryTest extends TestCase {
         );
 
         // Should match the previously generated data
-        $this->assertTrue($utils->isZplSimilar(
+        $this->assertGreaterThan(95, $utils->getPercentSimilar(
             $pages,
             $utils->loadExpectedPages("expected_duck", count($pages)),
             "can use factory for image"
@@ -43,7 +43,7 @@ final class CanUseFactoryTest extends TestCase {
         );
 
         // Should match the previously generated data
-        $this->assertTrue($utils->isZplSimilar(
+        $this->assertGreaterThan(95, $utils->getPercentSimilar(
             $pages,
             $utils->loadExpectedPages("expected_label", count($pages)),
             "can use factory for pdf"

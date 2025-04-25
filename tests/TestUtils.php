@@ -40,11 +40,15 @@ class TestUtils {
         );
     }
 
-    public function isZplSimilar(array $pagesA, array $pagesB, string $context) {
+    /**
+    * @param string[] $pagesA
+    * @param string[] $pagesB
+    */
+    public function getPercentSimilar(array $pagesA, array $pagesB, string $context): float {
         $acc = 0;
         $comps = 0;
         for ($pageNum = 0; $pageNum < count($pagesA); $pageNum++) {
-            $preview = fn ($s) => substr($s, 0, 10_000);
+            $preview = static fn (string $s) => substr($s, 0, 10_000);
             similar_text($preview($pagesA[$pageNum]), $preview($pagesB[$pageNum]), $percent);
             $this->logger->info("Texts are {$percent}% similar ({$context})");
             $acc += $percent;
@@ -53,6 +57,6 @@ class TestUtils {
 
         $avg = $acc / $comps;
         $this->logger->info("Texts are {$avg}% similar ({$context})");
-        return $avg > self::PERCENT_DIFFERENCE_TOLERANCE;
+        return $avg;
     }
 }

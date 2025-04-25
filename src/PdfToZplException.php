@@ -12,6 +12,13 @@ class PdfToZplException extends Exception {
     }
 
     public function __toString() {
-        return __CLASS__ . ": [{$this->code}]: {$this->message}\n";
+        if (! is_int($this->code)) {
+            $this->code = 0;
+        }
+        if (! is_string($this->message)) {
+            $this->message = "Unknown error";
+        }
+        
+        return __CLASS__ . ": {$this->message} ({$this->code})";
     }
 }

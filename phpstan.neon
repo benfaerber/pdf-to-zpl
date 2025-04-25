@@ -1,5 +1,5 @@
 parameters:
-    level: 9
+    level: 10
     parallel:
         # Increase the job size. The App hits memory limits at 20
         jobSize: 100

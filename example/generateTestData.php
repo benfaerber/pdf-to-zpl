@@ -20,19 +20,16 @@ use Faerber\PdfToZpl\ImageToZplConverter;
 
 
 class GenerateTestData {
-    private EchoLogger $logger;
-    private string $testData;
-    private string $testOutput;
     private ConverterSettings $settings;
     private PdfToZplConverter $pdfConverter;
     private ImageToZplConverter $imageConverter;
     private PdfToZplConverter $landscapePdfConverter;
 
-    public function __construct() {
-        $this->logger = new EchoLogger();
-        $this->testData = __DIR__ . "/../test_data";
-        $this->testOutput = __DIR__ . "/../test_output";
-
+    public function __construct(
+        private EchoLogger $logger = new EchoLogger(),
+        private string $testData = __DIR__ . "/../test_data",
+        private string $testOutput = __DIR__ . "/../test_output",
+    ) {
         $this->settings = new ConverterSettings(
             scale: ImageScale::Cover,
             logger: $this->logger,

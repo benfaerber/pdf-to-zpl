@@ -1,3 +1,4 @@
+#!/usr/bin/php
 <?php
 
 require __DIR__ . "/../vendor/autoload.php";
@@ -16,95 +17,107 @@ use Faerber\PdfToZpl\ImageToZplConverter;
 // The only reason you would need to regenerate test data is if you've made a
 // change that will change the ZPL structure (ie use a different image library or modify scaling code)
 
-$logger = new EchoLogger();
-$testData = __DIR__ . "/../test_data";
-$testOutput = __DIR__ . "/../test_output";
 
-$settings = new ConverterSettings(
-    scale: ImageScale::Cover,
-    logger: $logger,
-);
-$pdfConverter = new PdfToZplConverter($settings);
-$imageConverter = new ImageToZplConverter($settings);
 
-$landscapePdfConverter = new PdfToZplConverter(new ConverterSettings(
-    rotateDegrees: 90,
-));
+class GenerateTestData {
+    private EchoLogger $logger;
+    private string $testData;
+    private string $testOutput;
+    private ConverterSettings $settings;
+    private PdfToZplConverter $pdfConverter;
+    private ImageToZplConverter $imageConverter;
+    private PdfToZplConverter $landscapePdfConverter;
 
-/** @param string[] $pages */
-function downloadPages(array $pages, string $name): void {
-    global $testOutput, $logger;
-    foreach ($pages as $index => $page) {
-        assert(str_starts_with($page, "^XA^GFA,"));
+    public function __construct() {
+        $this->logger = new EchoLogger();
+        $this->testData = __DIR__ . "/../test_data";
+        $this->testOutput = __DIR__ . "/../test_output";
 
-        $basePath = $testOutput . "/{$name}_{$index}";
-        $zplFilepath = $basePath . ".zpl.txt";
-        if (file_exists($zplFilepath)) {
-            continue;
+        $this->settings = new ConverterSettings(
+            scale: ImageScale::Cover,
+            logger: $this->logger,
+        );
+        $this->pdfConverter = new PdfToZplConverter($this->settings);
+        $this->imageConverter = new ImageToZplConverter($this->settings);
+
+        $this->landscapePdfConverter = new PdfToZplConverter(new ConverterSettings(
+            rotateDegrees: 90,
+        ));
+    }
+
+    /** @param string[] $pages */
+    function downloadPages(array $pages, string $name): void {
+        foreach ($pages as $index => $page) {
+            assert(str_starts_with($page, "^XA^GFA,"));
+
+            $basePath = $this->testOutput . "/{$name}_{$index}";
+            $zplFilepath = $basePath . ".zpl.txt";
+            if (file_exists($zplFilepath)) {
+                continue;
+            }
+
+            file_put_contents($zplFilepath, $page);
+
+            $this->logger->info("Downloading {$name} {$index}");
+
+            $image = new LabelImage(zpl: $page);
+            $image->saveAs($basePath . ".png");
+
+            // So we don't get rate limited
+            sleep(1);
         }
+    }
 
-        file_put_contents($zplFilepath, $page);
+    function convertPdfToPages(string $pdf, string $name, PdfToZplConverter $converter): void {
+        $this->logger->info("Converting PDF {$name}");
+        $pdfFile = $this->testData . "/" . $pdf;
+        $pages = $converter->convertFromFile($pdfFile);
+        $this->downloadPages($pages, $name);
+    }
 
-        $logger->info("Downloading {$name} {$index}");
+    function convertImageToPages(string $image, string $name): void {
+        $this->logger->info("Converting Image {$name}");
+        $imageFile = $this->testData . "/" . $image;
+        $pages = $this->imageConverter->convertFromFile($imageFile);
+        $this->downloadPages($pages, $name);
+    }
 
-        $image = new LabelImage(zpl: $page);
-        $image->saveAs($basePath . ".png");
 
-        // So we don't get rate limited
-        sleep(1);
+    function convertEndiciaLabel(): void {
+        $this->convertPdfToPages("endicia-shipping-label.pdf", "expected_label", $this->pdfConverter);
+    }
+
+    function convertDonkeyPdf(): void {
+        $this->convertPdfToPages("donkey.pdf", "expected_donkey", $this->pdfConverter);
+    }
+
+    function convertLandscapePdf(): void {
+        $this->convertPdfToPages("usps-label-landscape.pdf", "expected_usps_landscape", $this->landscapePdfConverter);
+    }
+
+    function convertDuckImage(): void {
+        $this->convertImageToPages("duck.png", "expected_duck");
+    }
+
+    function purgeOld(): void {
+        $this->logger->info("Deleting old info!"); 
+        foreach (scandir($this->testOutput) as $file) {
+            if (str_starts_with($file, ".")) {
+                continue;
+            }
+
+            unlink($this->testOutput . "/" . $file);
+        }
+    }
+    
+    public function handle(): void {
+        $this->purgeOld();
+        $this->convertEndiciaLabel();
+        $this->convertDonkeyPdf();
+        $this->convertDuckImage();
+        $this->convertLandscapePdf();
+        exit(0);
     }
 }
 
-
-function convertPdfToPages(string $pdf, string $name, PdfToZplConverter $converter): void {
-    global $testData, $testOutput, $logger;
-    $logger->info("Converting PDF {$name}");
-    $pdfFile = $testData . "/" . $pdf;
-    $pages = $converter->convertFromFile($pdfFile);
-    downloadPages($pages, $name);
-}
-
-function convertImageToPages(string $image, string $name): void {
-    global $imageConverter, $testData, $testOutput, $logger;
-    $logger->info("Converting Image {$name}");
-    $imageFile = $testData . "/" . $image;
-    $pages = $imageConverter->convertFromFile($imageFile);
-    downloadPages($pages, $name);
-}
-
-
-function convertEndiciaLabel(): void {
-    global $pdfConverter;
-    convertPdfToPages("endicia-shipping-label.pdf", "expected_label", $pdfConverter);
-}
-
-function convertDonkeyPdf(): void {
-    global $pdfConverter;
-    convertPdfToPages("donkey.pdf", "expected_donkey", $pdfConverter);
-}
-
-function convertLandscapePdf(): void {
-    global $landscapePdfConverter;
-    convertPdfToPages("usps-label-landscape.pdf", "expected_usps_landscape", $landscapePdfConverter);
-}
-
-function convertDuckImage(): void {
-    convertImageToPages("duck.png", "expected_duck");
-}
-
-function purgeOld(): void {
-    global $testOutput;
-    foreach (scandir($testOutput) as $file) {
-        if (str_starts_with($file, ".")) {
-            continue;
-        }
-
-        unlink($testOutput . "/" . $file);
-    }
-}
-
-purgeOld();
-convertEndiciaLabel();
-convertDonkeyPdf();
-convertDuckImage();
-convertLandscapePdf();
+(new GenerateTestData())->handle();

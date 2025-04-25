@@ -6,6 +6,9 @@ use Exception;
 use Faerber\PdfToZpl\Images\ImagickProcessor;
 use Faerber\PdfToZpl\Settings\ConverterSettings;
 use Illuminate\Support\Collection;
+use Imagick;
+use ImagickException;
+use ImagickPixel;
 
 /** Converts a PDF file into a list of ZPL commands */
 class PdfToZplConverter implements ZplConverterService {
@@ -32,16 +35,16 @@ class PdfToZplConverter implements ZplConverterService {
     }
 
     /** Add a white background to the label */
-    private function background(ImagickStub $img): ImagickStub {
-        $background = new ImagickStub();
-        $pixel = new ImagickPixelStub('white');
-        $background->newImage($img->getImageWidth(), $img->getImageHeight(), $pixel->inner());
+    private function background(Imagick $img): Imagick {
+        $background = new Imagick();
+        $pixel = new ImagickPixel('white');
+        $background->newImage($img->getImageWidth(), $img->getImageHeight(), $pixel);
 
         $background->setImageFormat(
             $img->getImageFormat()
         );
 
-        $background->compositeImage($img->inner(), ImagickStub::constant('COMPOSITE_OVER'), 0, 0);
+        $background->compositeImage($img, Imagick::COMPOSITE_OVER, 0, 0);
 
         return $background;
     }
@@ -51,15 +54,14 @@ class PdfToZplConverter implements ZplConverterService {
     * @return Collection<int, string> A list of raw PNG data as a string
     */
     private function pdfToImages(string $pdfData): Collection {
-        $img = new ImagickStub();
+        $img = new Imagick();
         $dpi = $this->settings->dpi;
         $img->setResolution($dpi, $dpi);
         try {
             $img->readImageBlob($pdfData);
             $this->settings->log("Read blob...");
-        } catch (Exception $e) {
-            /** @disregard intelephense(P1009) */
-            if (is_a($e, \ImagickException::class) && $e->getCode() === self::IMAGICK_SECURITY_CODE) {
+        } catch (ImagickException $e) {
+            if ($e->getCode() === self::IMAGICK_SECURITY_CODE) {
                 throw new PdfToZplException(
                     "You need to enable PDF reading and writing in your Imagick settings (see docs for more details)", 
                     code: 10, 
@@ -89,7 +91,7 @@ class PdfToZplConverter implements ZplConverterService {
             $background = $this->background($img);
             $images->push((string)$background);
         }
-        $img->destroy();
+        $img->clear();
 
         return $images;
     }
@@ -97,8 +99,12 @@ class PdfToZplConverter implements ZplConverterService {
     /**
     * Convert raw PDF data into an array of ZPL commands.
     * Each page of the PDF is 1 ZPL command.
+    *
+    * @return string[]
     */
     public function convertFromBlob(string $pdfData): array {
+        // TODO: why does toArray convert this to mixed? */ 
+        /** @var string[] */
         return $this->pdfToZpls($pdfData)->toArray();
     }
 

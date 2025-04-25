@@ -1,5 +1,5 @@
 parameters:
-    level: 6
+    level: 10
     parallel:
         # Increase the job size. The App hits memory limits at 20
         jobSize: 100
@@ -11,6 +11,4 @@ parameters:
         - benchmarks
         - src
     ignoreErrors:
-        - 
-            message: '#Call to an undefined method Faerber\\PdfToZpl\\ImagickStub::#'
     excludePaths:

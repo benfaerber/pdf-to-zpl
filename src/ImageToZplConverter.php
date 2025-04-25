@@ -42,14 +42,26 @@ class ImageToZplConverter implements ZplConverterService {
 
             // Convert bits to bytes
             $bytes = str_split($bits, length: 8);
-            $bytes[] = str_pad(array_pop($bytes), length: 8, pad_string: '0');
+            $lastByte = array_pop($bytes); 
+            if ($lastByte === null) {
+                throw new PdfToZplException("Failed to get last byte");
+            }
+            $bytes[] = str_pad($lastByte, length: 8, pad_string: '0');
 
             // Convert bytes to hex and compress
             $row = (new Collection($bytes))
                 ->map(fn ($byte) => sprintf('%02X', bindec($byte)))
                 ->implode('');
 
-            $bitmap .= ($row === $lastRow) ? ':' : $this->compressRow(preg_replace(['/0+$/', '/F+$/'], [',', '!'], $row));
+            if ($row === $lastRow) {
+                $bitmap .= ":";
+            } else {
+                $encoded = preg_replace(['/0+$/', '/F+$/'], [',', '!'], $row);
+                if ($encoded === null) {
+                    throw new PdfToZplException("Failed to encode");
+                }
+                $bitmap .= $this->compressRow($encoded);
+            }
             $lastRow = $row;
         }
 
@@ -102,7 +114,11 @@ class ImageToZplConverter implements ZplConverterService {
 
     /** Run Line Encoder (replace repeating characters) */
     private function compressRow(string $row): string {
-        return preg_replace_callback('/(.)(\1{2,})/', fn ($matches) => $this->compressSequence($matches[0]), $row);
+        $replaced = preg_replace_callback('/(.)(\1{2,})/', fn ($matches) => $this->compressSequence($matches[0]), $row);
+        if (! $replaced) {
+            throw new PdfToZplException("Failed to compress image row");
+        }
+        return $replaced;
     }
 
     private function compressSequence(string $sequence): string {

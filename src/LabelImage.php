@@ -16,7 +16,7 @@ class LabelImage {
     public const URL = "http://api.labelary.com/v1/printers/8dpmm/labels";
     public string $image;
 
-    private static GuzzleClient|null $httpClient = null;
+    private static GuzzleClient $httpClient;
     private static ImageToZplConverter|null $imageConverter = null;
 
     public function __construct(
@@ -37,6 +37,7 @@ class LabelImage {
         ];
 
         $url = self::URL . "/{$this->width}x{$this->height}/0/";
+        
         $response = self::$httpClient->post($url, [
             'headers' => $headers,
             'multipart' => [

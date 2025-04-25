@@ -2,8 +2,6 @@
 
 namespace Faerber\PdfToZpl\Images;
 
-use Faerber\PdfToZpl\Settings\ConverterSettings;
-
 /** An image backend able to process the convertion to ZPL */
 interface ImageProcessor {
     /** The width of the image in pixels */

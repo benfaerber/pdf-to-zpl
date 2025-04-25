@@ -11,10 +11,18 @@ class TestUtils {
         return __DIR__ . "/../test_output/{$filename}";
     }
 
+    public static function fileGetContents(string $name): string {
+        $data = file_get_contents($name);
+        if ($data === false) {
+            throw new Exception("Failed to read {$name}!");
+        }
+        return $data;
+    } 
+
     /** @return string[] */
     public static function loadExpectedPages(string $name, int $pageCount): array {
         return array_map(
-            fn ($index) => file_get_contents(TestUtils::testOutput("{$name}_{$index}.zpl.txt")),
+            fn ($index) => self::fileGetContents(TestUtils::testOutput("{$name}_{$index}.zpl.txt")),
             range(0, $pageCount - 1)
         );
     }

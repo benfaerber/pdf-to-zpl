@@ -6,6 +6,7 @@ use Faerber\PdfToZpl\Images\{ImageProcessorOption, ImageProcessor};
 use Faerber\PdfToZpl\PdfToZplException;
 use Imagick;
 use Psr\Log\LoggerInterface;
+use Stringable;
 
 /** Settings for the PDF to ZPL conversion */
 class ConverterSettings {
@@ -83,7 +84,10 @@ class ConverterSettings {
             return;
         }
         foreach ($messages as $message) {
-            $this->logger->debug("[pdf-to-zpl] " . $message);
+            $message = is_string($message) || $message instanceof Stringable
+                ? (string)$message
+                : json_encode($message); 
+            $this->logger->debug("[pdf-to-zpl] {$message}");
         }
     }
 }

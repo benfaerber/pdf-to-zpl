@@ -120,12 +120,13 @@ class GenerateTestData
         }
     }
     
-    public function handle() {
+    public function handle(): void {
         $this->purgeOld();
         $this->convertEndiciaLabel();
         $this->convertDonkeyPdf();
         $this->convertDuckImage();
         $this->convertLandscapePdf();
+        exit(0);
     }
 }
 

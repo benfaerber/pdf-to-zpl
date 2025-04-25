@@ -3,41 +3,46 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Collection;
+use Psr\Log\LoggerInterface;
 
 class TestUtils {
+    public function __construct(private LoggerInterface $logger)
+    {
+
+    }
+
     /** Small things like PHP version, imagick version, etc
     * Break unit tests by creating tiny byte differences
     * The results are still valid.
     * This is how similar pages must be for them to considered ok
     */
     const PERCENT_DIFFERENCE_TOLERANCE = 95;
-    
-    public static function testData(string $filename): string {
+
+    public function testData(string $filename): string {
         return __DIR__ . "/../test_data/{$filename}";
     }
 
-    public static function testOutput(string $filename): string {
+    public function testOutput(string $filename): string {
         return __DIR__ . "/../test_output/{$filename}";
     }
 
-    public static function fileGetContents(string $name): string {
+    public function fileGetContents(string $name): string {
         $data = file_get_contents($name);
         if ($data === false) {
             throw new Exception("Failed to read {$name}!");
         }
         return $data;
-    } 
+    }
 
     /** @return string[] */
-    public static function loadExpectedPages(string $name, int $pageCount): array {
+    public function loadExpectedPages(string $name, int $pageCount): array {
         return array_map(
-            fn ($index) => self::fileGetContents(TestUtils::testOutput("{$name}_{$index}.zpl.txt")),
+            fn ($index) => self::fileGetContents($this->testOutput("{$name}_{$index}.zpl.txt")),
             range(0, $pageCount - 1)
         );
     }
-    
 
-    public static function isZplSimilar(array $aPages, array $bPages) {
+    public function isZplSimilar(array $aPages, array $bPages) {
         $acc = 0;
         $comps = 0;
         for ($i = 0; $i < count($aPages); $i++) {
@@ -51,7 +56,7 @@ class TestUtils {
         }
 
         $avg = $acc / $comps;
-        echo $avg;
+        $this->logger->info((string)$avg);
         return $avg > self::PERCENT_DIFFERENCE_TOLERANCE;
     }
 }

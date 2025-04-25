@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 use Faerber\PdfToZpl\ImageToZplConverter;
 use Faerber\PdfToZpl\Settings\ConverterSettings;
+use Faerber\PdfToZpl\Settings\EchoLogger;
 use PHPUnit\Framework\TestCase;
 
 final class CanConvertImageTest extends TestCase {
     public function testCanConvertDuck(): void {
+        $utils = new TestUtils(new EchoLogger); 
         $converter = new ImageToZplConverter(new ConverterSettings(verboseLogs: true));
-        $pages = $converter->convertFromFile(TestUtils::testData("duck.png"));
+        $pages = $converter->convertFromFile($utils->testData("duck.png"));
         $expectedPageCount = 1;
 
         // Should have 3 pages
@@ -21,7 +23,7 @@ final class CanConvertImageTest extends TestCase {
         // Should match the previously generated data
         $this->assertEquals(
             $pages,
-            TestUtils::loadExpectedPages("expected_duck", count($pages)),
+            $utils->loadExpectedPages("expected_duck", count($pages)),
         );
     }
 }

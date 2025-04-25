@@ -33,11 +33,14 @@
         "format": [
             "PHP_CS_FIXER_IGNORE_ENV=true ./vendor/bin/php-cs-fixer fix ."
         ],
+        "check-format": [
+            "PHP_CS_FIXER_IGNORE_ENV=true ./vendor/bin/php-cs-fixer check"
+        ],
         "analyze": [
             "./vendor/bin/phpstan analyze -c ./phpstan.neon"
         ],
         "verify": [
-            "./vendor/bin/php-cs-fixer check",
+            "composer check-format",
             "composer analyze",
             "composer test"
         ],

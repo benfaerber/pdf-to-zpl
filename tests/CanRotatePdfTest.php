@@ -27,6 +27,7 @@ final class CanRotatePdfTest extends TestCase {
         $this->assertTrue($utils->isZplSimilar(
             $pages,
             $utils->loadExpectedPages("expected_usps_landscape", count($pages)),
+            "can rotate landscape"
         ));
     }
 }

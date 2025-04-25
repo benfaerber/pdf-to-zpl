@@ -25,6 +25,7 @@ final class CanConvertPdfTest extends TestCase {
         $this->assertTrue($utils->isZplSimilar(
             $pages,
             $utils->loadExpectedPages("expected_label", count($pages)),
+            "can convert endicia pdf"
         ));
     }
 
@@ -44,6 +45,7 @@ final class CanConvertPdfTest extends TestCase {
         $this->assertTrue($utils->isZplSimilar(
             $pages,
             $utils->loadExpectedPages("expected_donkey", count($pages)),
+            "can convert donkey",
         ));
     }
 }

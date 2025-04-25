@@ -24,6 +24,7 @@ final class CanUseFactoryTest extends TestCase {
         $this->assertTrue($utils->isZplSimilar(
             $pages,
             $utils->loadExpectedPages("expected_duck", count($pages)),
+            "can use factory for image"
         ));
     }
 
@@ -45,6 +46,7 @@ final class CanUseFactoryTest extends TestCase {
         $this->assertTrue($utils->isZplSimilar(
             $pages,
             $utils->loadExpectedPages("expected_label", count($pages)),
+            "can use factory for pdf"
         ));
     }
 }

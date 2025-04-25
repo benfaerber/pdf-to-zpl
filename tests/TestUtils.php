@@ -42,21 +42,19 @@ class TestUtils {
         );
     }
 
-    public function isZplSimilar(array $aPages, array $bPages) {
+    public function isZplSimilar(array $pagesA, array $pagesB, string $context) {
         $acc = 0;
         $comps = 0;
-        for ($i = 0; $i < count($aPages); $i++) {
-            $linesA = explode(",", $aPages[$i]);
-            $linesB = explode(",", $bPages[$i]);
-            for ($j = 0; $j < count($linesA); $j++) {
-                similar_text($linesA[$j], $linesB[$j], $percent);
-                $acc += $percent;
-                $comps += 1;
-            }
+        for ($pageNum = 0; $pageNum < count($pagesA); $pageNum++) {
+            $preview = fn ($s) => substr($s, 0, 10_000);
+            similar_text($preview($pagesA[$pageNum]), $preview($pagesB[$pageNum]), $percent);
+            $this->logger->info("Texts are {$percent}% similar ({$context})");
+            $acc += $percent;
+            $comps += 1;
         }
 
         $avg = $acc / $comps;
-        $this->logger->info((string)$avg);
+        $this->logger->info("Texts are {$avg}% similar ({$context})");
         return $avg > self::PERCENT_DIFFERENCE_TOLERANCE;
     }
 }

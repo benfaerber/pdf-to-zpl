@@ -11,6 +11,4 @@ parameters:
         - benchmarks
         - src
     ignoreErrors:
-        - 
-            message: '#Call to an undefined method Faerber\\PdfToZpl\\ImagickStub::#'
     excludePaths:

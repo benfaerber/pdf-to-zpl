@@ -4,15 +4,15 @@ namespace Faerber\PdfToZpl\Images;
 
 use Exception;
 use Faerber\PdfToZpl\ImagickPixelStub;
-use Faerber\PdfToZpl\ImagickStub;
 use Faerber\PdfToZpl\PdfToZplException;
 use Faerber\PdfToZpl\Settings\ConverterSettings;
+use Imagick;
 
 class ImagickProcessor implements ImageProcessor {
-    private ImagickStub $img;
+    private Imagick $img;
     private ConverterSettings $settings;
 
-    public function __construct(ImagickStub $img, ConverterSettings $settings) {
+    public function __construct(Imagick $img, ConverterSettings $settings) {
         $this->img = $img;
         $this->settings = $settings;
     }
@@ -39,10 +39,9 @@ class ImagickProcessor implements ImageProcessor {
             throw new PdfToZplException("Cannot load!");
         }
 
-        $this->img->setImageColorspace(ImagickStub::constant("COLORSPACE_RGB"));
+        $this->img->setImageColorspace(Imagick::COLORSPACE_RGB);
         $this->img->setImageFormat('png');
-        // @phpstan-ignore staticMethod.notFound
-        $quantum = ImagickStub::getQuantum();
+        $quantum = Imagick::getQuantum();
         $this->img->thresholdImage(0.5 * $quantum);
         return $this;
     }

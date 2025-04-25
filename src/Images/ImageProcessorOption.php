@@ -2,9 +2,8 @@
 
 namespace Faerber\PdfToZpl\Images;
 
-use Exception;
-use Faerber\PdfToZpl\ImagickStub;
 use Faerber\PdfToZpl\Settings\ConverterSettings;
+use Imagick;
 
 enum ImageProcessorOption {
     /**
@@ -20,7 +19,7 @@ enum ImageProcessorOption {
 
     public function processor(ConverterSettings $settings): ImageProcessor {
         return match ($this) {
-            self::Imagick => new ImagickProcessor(new ImagickStub(), $settings),
+            self::Imagick => new ImagickProcessor(new Imagick(), $settings),
             self::Gd => new GdProcessor($settings),
         };
     }

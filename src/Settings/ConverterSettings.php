@@ -2,10 +2,11 @@
 
 namespace Faerber\PdfToZpl\Settings;
 
-use Exception;
 use Faerber\PdfToZpl\Images\{ImageProcessorOption, ImageProcessor};
 use Faerber\PdfToZpl\PdfToZplException;
+use Imagick;
 use Psr\Log\LoggerInterface;
+use Stringable;
 
 /** Settings for the PDF to ZPL conversion */
 class ConverterSettings {
@@ -68,8 +69,7 @@ class ConverterSettings {
             throw new PdfToZplException("You must install the Imagick image library");
         }
 
-        /** @disregard intelephense(P1009) */
-        $formats = \imagick::queryFormats();
+        $formats = Imagick::queryFormats();
         if (! array_search("PDF", $formats)) {
             throw new PdfToZplException("Format PDF not allowed for Imagick (try installing ghostscript: sudo apt-get install -y ghostscript)");
         }
@@ -84,7 +84,10 @@ class ConverterSettings {
             return;
         }
         foreach ($messages as $message) {
-            $this->logger->debug("[pdf-to-zpl] " . $message);
+            $message = is_string($message) || $message instanceof Stringable
+                ? (string)$message
+                : json_encode($message); 
+            $this->logger->debug("[pdf-to-zpl] {$message}");
         }
     }
 }

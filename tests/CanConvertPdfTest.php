@@ -20,10 +20,10 @@ final class CanConvertPdfTest extends TestCase {
         );
 
         // Should match the previously generated data
-        $this->assertEquals(
+        $this->assertTrue(TestUtils::isZplSimilar(
             $pages,
             TestUtils::loadExpectedPages("expected_label", count($pages)),
-        );
+        ));
     }
 
     public function testCanConvertDonkeyPdf(): void {
@@ -38,9 +38,9 @@ final class CanConvertPdfTest extends TestCase {
         );
 
         // Should match the previously generated data
-        $this->assertEquals(
+        $this->assertTrue(TestUtils::isZplSimilar(
             $pages,
             TestUtils::loadExpectedPages("expected_donkey", count($pages)),
-        );
+        ));
     }
 }

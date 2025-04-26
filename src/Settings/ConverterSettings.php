@@ -92,7 +92,7 @@ class ConverterSettings {
         foreach ($messages as $message) {
             $message = is_string($message) || $message instanceof Stringable
                 ? (string)$message
-                : json_encode($message); 
+                : (string)json_encode($message); 
             $this->logger->debug($message);
         }
     }

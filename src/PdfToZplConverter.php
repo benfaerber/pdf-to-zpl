@@ -2,10 +2,9 @@
 
 namespace Faerber\PdfToZpl;
 
-use Exception;
 use Faerber\PdfToZpl\Images\ImagickProcessor;
 use Faerber\PdfToZpl\Settings\ConverterSettings;
-use Illuminate\Support\Collection;
+use Faerber\PdfToZpl\Settings\Collection;
 use Imagick;
 use ImagickException;
 use ImagickPixel;
@@ -104,7 +103,6 @@ class PdfToZplConverter implements ZplConverterService {
     */
     public function convertFromBlob(string $pdfData): array {
         // TODO: why does toArray convert this to mixed? */ 
-        /** @var string[] */
         return $this->pdfToZpls($pdfData)->toArray();
     }
 

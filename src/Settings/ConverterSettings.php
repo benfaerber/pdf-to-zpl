@@ -31,9 +31,14 @@ class ConverterSettings {
     /** How many degrees to rotate the label. Used for landscape PDFs */
     public int|null $rotateDegrees;
 
+    /** The Image Processing backend to use (example: imagick or GD) */
     public ImageProcessor $imageProcessor;
 
+    /** Log each step of the process */
     public bool $verboseLogs;
+    
+    /** The logger to use for `verboseLogs`
+    * If using Laravel pass: `logger()` */
     public LoggerInterface $logger;
 
     public function __construct(

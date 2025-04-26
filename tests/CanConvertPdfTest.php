@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 final class CanConvertPdfTest extends TestCase {
     public function testCanConvertEndiciaPdf(): void {
         $utils = new TestUtils(new EchoLogger);
-        $converter = new PdfToZplConverter(new ConverterSettings(verboseLogs: true));
+        $converter = new PdfToZplConverter(new ConverterSettings(verboseLogs: true, logger: $utils->logger));
         $pages = $converter->convertFromFile($utils->testData("endicia-shipping-label.pdf"));
         $expectedPageCount = 3;
 

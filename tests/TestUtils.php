@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-use Illuminate\Support\Collection;
 use Psr\Log\LoggerInterface;
 
 class TestUtils {
-    public function __construct(private LoggerInterface $logger) {
+    public function __construct(public LoggerInterface $logger) {
     }
 
     /** Small things like PHP version, imagick version, etc

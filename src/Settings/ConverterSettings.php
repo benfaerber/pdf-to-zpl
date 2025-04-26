@@ -38,7 +38,8 @@ class ConverterSettings {
     public bool $verboseLogs;
     
     /** The logger to use for `verboseLogs`
-    * If using Laravel pass: `logger()` */
+    * If using Laravel pass: `logger()` 
+    */
     public LoggerInterface $logger;
 
     public function __construct(

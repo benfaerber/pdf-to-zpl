@@ -17,7 +17,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     
-    - name: "Insall PHP"
+    - name: "Install PHP"
       uses: shivammathur/setup-php@v2
       with:
         php-version: "8.3"
@@ -25,6 +25,9 @@ jobs:
 
     - name: Validate composer.json and composer.lock
       run: composer validate
+    
+    - name: Display PHP Info
+      run: php -r "phpinfo();"
 
     - name: Cache Composer packages
       id: composer-cache
@@ -35,9 +38,10 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-php-
 
-    - name: Install GhostScript 
+    - name: Configure Imagick Permissions and Dependencies 
       run: |
           sudo apt-get install -y ghostscript
+          sudo cp -f ./.github/github-actions-imagick-config.xml /etc/ImageMagick-6/policy.xml
 
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress
@@ -48,10 +52,7 @@ jobs:
     - name: Verify phpstan 
       run: composer analyze 
 
-    - name: Configure Imagick Permissions 
-      run: sudo cp -f ./.github/github-actions-imagick-config.xml /etc/ImageMagick-6/policy.xml
-
-    - name: Run test suite
+    - name: Run phpunit tests 
       run: composer test
 
     - name: Show PHPUnit logs on failure

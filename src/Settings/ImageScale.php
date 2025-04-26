@@ -2,8 +2,7 @@
 
 namespace Faerber\PdfToZpl\Settings;
 
-enum ImageScale
-{
+enum ImageScale {
     /**
     * Scale the Image to fill all available space
     * (does not respect aspect ratio)
@@ -20,13 +19,11 @@ enum ImageScale
     */
     case None;
 
-    public function shouldResize(): bool
-    {
+    public function shouldResize(): bool {
         return $this === self::Fill || $this === self::Cover;
     }
 
-    public function isBestFit(): bool
-    {
+    public function isBestFit(): bool {
         return $this === self::Cover;
     }
 }

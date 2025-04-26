@@ -2,49 +2,44 @@
 
 namespace Faerber\PdfToZpl\Images;
 
-use Exception;
-use Faerber\PdfToZpl\ImagickStub;
+use Faerber\PdfToZpl\PdfToZplException;
 use Faerber\PdfToZpl\Settings\ConverterSettings;
 use GdImage;
 
-class GdProcessor implements ImageProcessor
-{
+class GdProcessor implements ImageProcessor {
     private GdImage $img;
     private ConverterSettings $settings;
 
-    public function __construct(ConverterSettings $settings)
-    {
+    public function __construct(ConverterSettings $settings) {
         $this->settings = $settings;
     }
 
-    public function width(): int
-    {
+    public function width(): int {
         return imagesx($this->img);
     }
 
-    public function height(): int
-    {
+    public function height(): int {
         return imagesy($this->img);
     }
 
-    public function isPixelBlack(int $x, int $y): bool
-    {
+    public function isPixelBlack(int $x, int $y): bool {
         return (imagecolorat($this->img, $x, $y) & 0xFF) < 127;
     }
 
-    public function readBlob(string $data): static
-    {
-        $this->img = imagecreatefromstring($data);
-        if (! $this->img) {
-            throw new Exception("Failure!");
+    public function readBlob(string $data): static {
+        $img = imagecreatefromstring($data);
+        if ($img === false) {
+            throw new PdfToZplException("Failed to create image with GD!");
         }
+        $this->img = $img;
 
-        imagepalettetotruecolor($this->img);
+        if (imagepalettetotruecolor($this->img) === false) {
+            throw new PdfToZplException("Failed to convert GD image to true color!");
+        };
         return $this;
     }
 
-    public function scaleImage(): static
-    {
+    public function scaleImage(): static {
         if (!$this->settings->scale->shouldResize() || $this->width() === $this->settings->labelWidth) {
             return $this;
         }
@@ -64,7 +59,14 @@ class GdProcessor implements ImageProcessor
             }
         }
 
+        if ($dstWidth < 1 || $dstHeight < 1) {
+            throw new PdfToZplException("This image is too small!");
+        }
+
         $scaledImg = imagecreatetruecolor($dstWidth, $dstHeight);
+        if ($scaledImg === false) {
+            throw new PdfToZplException("Failed to create GD image");
+        }
 
         imagecopyresampled(
             $scaledImg,
@@ -84,16 +86,18 @@ class GdProcessor implements ImageProcessor
         return $this;
     }
 
-    public function rotateImage(): static
-    {
+    public function rotateImage(): static {
         if ($this->settings->rotateDegrees) {
-            $this->img = imagerotate($this->img, $this->settings->rotateDegrees, 0);
+            $img = imagerotate($this->img, $this->settings->rotateDegrees, 0);
+            if ($img === false) {
+                throw new PdfToZplException("Failed to rotate image!");
+            }
+            $this->img = $img;
         }
         return $this;
     }
 
-    public function processorType(): ImageProcessorOption
-    {
+    public function processorType(): ImageProcessorOption {
         return ImageProcessorOption::Gd;
     }
 }

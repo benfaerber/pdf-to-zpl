@@ -2,13 +2,14 @@
 
 namespace Faerber\PdfToZpl\Settings;
 
-use Exception;
 use Faerber\PdfToZpl\Images\{ImageProcessorOption, ImageProcessor};
-use Symfony\Component\EventDispatcher\DependencyInjection\ExtractingEventDispatcher;
+use Faerber\PdfToZpl\PdfToZplException;
+use Imagick;
+use Psr\Log\LoggerInterface;
+use Stringable;
 
 /** Settings for the PDF to ZPL conversion */
-class ConverterSettings
-{
+class ConverterSettings {
     public const DEFAULT_LABEL_WIDTH = 812;
     public const DEFAULT_LABEL_HEIGHT = 1218;
     public const DEFAULT_LABEL_DPI = 203;
@@ -30,9 +31,16 @@ class ConverterSettings
     /** How many degrees to rotate the label. Used for landscape PDFs */
     public int|null $rotateDegrees;
 
+    /** The Image Processing backend to use (example: imagick or GD) */
     public ImageProcessor $imageProcessor;
 
+    /** Log each step of the process */
     public bool $verboseLogs;
+    
+    /** The logger to use for `verboseLogs`
+    * If using Laravel pass: `logger()` 
+    */
+    public LoggerInterface $logger;
 
     public function __construct(
         ImageScale $scale = ImageScale::Cover,
@@ -43,6 +51,7 @@ class ConverterSettings
         ImageProcessorOption $imageProcessorOption = ImageProcessorOption::Gd,
         int|null $rotateDegrees = null,
         bool $verboseLogs = false,
+        LoggerInterface|null $logger = null,
     ) {
         $this->scale = $scale;
         $this->dpi = $dpi;
@@ -50,34 +59,41 @@ class ConverterSettings
         $this->labelHeight = $labelHeight;
         $this->imageFormat = $imageFormat;
         $this->rotateDegrees = $rotateDegrees;
-        $this->verboseLogs = $verboseLogs; 
+        $this->verboseLogs = $verboseLogs;
+        $this->logger = $logger ?: new EchoLogger();
         $this->verifyDependencies($imageProcessorOption);
 
         $this->imageProcessor = $imageProcessorOption->processor($this);
     }
 
-    private function verifyDependencies(ImageProcessorOption $option)
-    {
-        if (! extension_loaded('gd') && $option === ImageProcessorOption::Gd) {
-            throw new Exception("pdf-to-zpl: You must install the GD image library or change imageProcessorOption to ImageProcessOption::Imagick");
-        }
-
-        if (! extension_loaded('imagick')) {
-            throw new Exception("pdf-to-zpl: You must install the Imagick image library");
-        }
-    }
-
-    public static function default()
-    {
+    public static function default(): self {
         return new self();
     }
 
-    public function log(...$messages) {
-        if (! $this->verboseLogs) return; 
+    private function verifyDependencies(ImageProcessorOption $option): void {
+        if (! extension_loaded('gd') && $option === ImageProcessorOption::Gd) {
+            throw new PdfToZplException("You must install the GD image library or change imageProcessorOption to ImageProcessOption::Imagick");
+        }
+
+        if (! extension_loaded('imagick')) {
+            throw new PdfToZplException("You must install the Imagick image library");
+        }
+
+        $formats = Imagick::queryFormats();
+        if (! array_search("PDF", $formats)) {
+            throw new PdfToZplException("Format PDF not allowed for Imagick (try installing ghostscript: sudo apt-get install -y ghostscript)");
+        }
+    }
+
+    public function log(mixed ...$messages): void {
+        if (! $this->verboseLogs) {
+            return;
+        }
         foreach ($messages as $message) {
-            echo "[pdf-to-zpl logs]: "; 
-            echo $message;
-            echo "\n";
-        } 
+            $message = is_string($message) || $message instanceof Stringable
+                ? (string)$message
+                : (string)json_encode($message); 
+            $this->logger->debug($message);
+        }
     }
 }

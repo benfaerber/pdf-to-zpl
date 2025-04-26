@@ -1,1 +1,0 @@
-{"version":1,"defects":[],"times":{"CanConvertImageTest::testCanConvertDuck":0.228,"CanConvertPdfTest::testCanConvertEndiciaPdf":1.203,"CanConvertPdfTest::testCanConvertDonkeyPdf":4.682,"CanRotatePdfTest::testCanRotateLandscapePdf":1.629,"CanUseFactoryTest::testCanUseFactoryForImage":0.225,"CanUseFactoryTest::testCanUseFactoryForPdf":1.218}}

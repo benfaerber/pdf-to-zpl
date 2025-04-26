@@ -1,6 +1,12 @@
-# PDF to ZPL [![Packagist](https://img.shields.io/packagist/v/faerber/pdf-to-zpl)](https://packagist.org/packages/faerber/pdf-to-zpl) [![Github Actions](https://github.com/benfaerber/pdf-to-zpl/actions/workflows/php.yml/badge.svg)](https://github.com/benfaerber/pdf-to-zpl/actions)
-![donkey pdf](./static/donkey-label.jpg "A label created with pdf-to-zpl")
+<h1>
+PDF to ZPL
+<a href="https://packagist.org/packages/faerber/pdf-to-zpl"><img src="https://img.shields.io/packagist/v/faerber/pdf-to-zpl" /></a>
+<a href="https://github.com/benfaerber/pdf-to-zpl/actions"><img src="https://github.com/benfaerber/pdf-to-zpl/actions/workflows/php83.yml/badge.svg" /></a>
+<a href="phpstan.neon"><img src="https://img.shields.io/badge/PHPStan-level%2010-brightgreen?logo=php" /></a>
+<a href="LICENSE"><img src="https://img.shields.io/github/license/benfaerber/pdf-to-zpl?color=yellowgreen" /></a>
+</h1>
 
+<img src="./static/donkey-label.jpg" alt="A label created with pdf-to-zpl" />
 
 Convert a PDF into the ZPL format. Allowing for custom images, alphabets like Hebrew, Arabic and Cyrillic (without messing with fonts on the printer) and multipage shipping labels!
 
@@ -12,7 +18,10 @@ composer require faerber/pdf-to-zpl
 ```php
 <?php
 use Faerber\PdfToZpl\PdfToZplConverter;
+use Faerber\PdfToZpl\Settings\ConverterSettings;
+use Faerber\PdfToZpl\Settings\ImageScale;
 
+// By default this will convert a 4x6 label
 $converter = new PdfToZplConverter();
 
 // Get an array of ZPL commands (1 per page)
@@ -20,7 +29,7 @@ $pages = $converter->convertFromFile("myFile.pdf");
 // Or from a blob:
 $pages = $converter->convertFromBlob(file_get_contents("myFile.pdf"));
 
-foreach ($pages as $index => $page) {
+foreach ($pages as $page) {
     // Each page is a single ZPL statement
     assert(str_starts_with($page, "^XA^GFA,"));
 }
@@ -28,47 +37,39 @@ foreach ($pages as $index => $page) {
 
 ## Environment Setup:
 
+The minimum version for this package is `8.1`.
+
 Ensure you have Imagick and GD installed using:
 ```
-sudo apt install php8.4-gd
+sudo apt install php8.3-gd
 
-sudo apt install php8.4-imagick
+sudo apt install php8.3-imagick
 ```
-Then make sure to enable them in `php.ini`.
-
-
-This library can work with only Imagick but GD is recommended because it's a lot faster (see [benchmarks](./.phpbench/html/index.html) for more details)! 
-If you would like to only use Imagick use these settings:
-```php
-<?php
-
-use Faerber\PdfToZpl\PdfToZplConverter;
-use Faerber\PdfToZpl\Settings\ConverterSettings;
-use Faerber\PdfToZpl\Images\ImageProcessorOption;
-
-$converter = new PdfToZplConverter(
-    new ConverterSettings(
-        imageProcessorOption: ImageProcessorOption::Imagick,
-    )
-);
-```
+(Or whatever PHP Version you are using)
+Then make sure to enable them in `php.ini` (usually enabled by default).
 
 ### Imagick Settings
 You may need to enable PDF permission in your Imagick settings.
 
-The easiest way to do this is by running the setup shell script: `sudo ./scripts/configure-imagick.sh`
+The easiest way to do this is by running the setup shell script:
+```sh
+sudo sh -c "$(curl -fsSL https://raw.githubusercontent.com/benfaerber/pdf-to-zpl/refs/heads/master/scripts/configure-imagick.sh)"
+```
+(This downloads and runs the script directly from this repo)
 
 If the script doesn't meet your needs you can perform the change manually.
 First edit your Imagick Policy file with: `sudo nano "/etc/$(ls /etc/ | grep ImageMagick)/policy.xml"`
 
 Find this line and ensure the rights are set to `read | write`:
-```
+```xml
 <policy domain="coder" rights="none" pattern="PDF" />
 ```
 Change to:
-```
+```xml
 <policy domain="coder" rights="read | write" pattern="PDF" />
 ```
+If this line doesn't exist at all, add it. You'll only run into this with tiny linux boxes like Github Actions. 
+
 
 I've only tested this library on Linux and Mac so if you get it working on windows feel free to open a PR!
 
@@ -102,19 +103,37 @@ $labelImage = new LabelImage(
 $labelImage->saveAs("my_label.png");
 ```
 
+## Using without GD (no installs needed)
+This library can work with only Imagick but GD is recommended because it's a lot faster (see [benchmarks](./.phpbench/html/index.html) for more details)! 
+If you would like to only use Imagick use these settings:
+```php
+<?php
+
+use Faerber\PdfToZpl\PdfToZplConverter;
+use Faerber\PdfToZpl\Settings\ConverterSettings;
+use Faerber\PdfToZpl\Images\ImageProcessorOption;
+
+$converter = new PdfToZplConverter(
+    new ConverterSettings(
+        imageProcessorOption: ImageProcessorOption::Imagick,
+    )
+);
+```
 
 ## Unit Testing
-Testing is done via PHP Unit. Run `composer test`.
+Run `composer test`. Testing is done via PHP Unit. 
 
-If you make major changes you may need to regenerate the test data.
+This package works on PHP 8.1 but the test data was generated with 8.3. 
+There will be tiny byte differences between these 2 versions. Use PHP 8.3 (or Github Actions which uses 8.3) to use the test suite.
+If you make major changes you may need to regenerate the test data (tests pass if each file is at least 95% similar to the test data generated with PHP 8.3 on my linux box).
 For example modifying scaling code where the output is correct but the test data is outdated.
 Run `composer generate-test-data` and manually verify the images are rendered correctly.
 
 ## Benchmarking
-Benchmarking is done via `phpbench`. Run `composer benchmark`.
+Run `composer benchmark`. Benchmarking is done via `phpbench`. 
 
 ## Formatting
-Formatting is done via `php-cs-fixer`. Run `composer format`.
+Run `composer format`. Formatting is done via `php-cs-fixer`. 
 
 ## How does this work?
 1. Loads the PDF and render each page as image

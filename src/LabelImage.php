@@ -3,7 +3,6 @@
 namespace Faerber\PdfToZpl;
 
 use GuzzleHttp\Client as GuzzleClient;
-use Exception;
 use Faerber\PdfToZpl\Settings\LabelDirection;
 
 /**
@@ -12,12 +11,11 @@ use Faerber\PdfToZpl\Settings\LabelDirection;
  *
  * Only 5 requests are allowed per second!
  */
-class LabelImage
-{
+class LabelImage {
     public const URL = "http://api.labelary.com/v1/printers/8dpmm/labels";
     public string $image;
 
-    private static GuzzleClient|null $httpClient = null;
+    private static GuzzleClient $httpClient;
     private static ImageToZplConverter|null $imageConverter = null;
 
     public function __construct(
@@ -31,14 +29,14 @@ class LabelImage
     }
 
     /** Download and return a raw PNG as a string */
-    public function download(): string
-    {
+    public function download(): string {
         $headers = [
             'Accept' => 'image/png',
             'X-Rotation' => strval($this->direction->toDegree()),
         ];
 
         $url = self::URL . "/{$this->width}x{$this->height}/0/";
+        
         $response = self::$httpClient->post($url, [
             'headers' => $headers,
             'multipart' => [
@@ -50,7 +48,7 @@ class LabelImage
         ]);
 
         if ($response->getStatusCode() !== 200) {
-            throw new Exception("Failed to Download Image!");
+            throw new PdfToZplException("Failed to Download Image!");
         }
 
         return (string)$response->getBody();
@@ -59,14 +57,12 @@ class LabelImage
     /**
     * For use in HTML image tags. `<img src="{{ $label->asHtmlImage() }}" />`
     */
-    public function asHtmlImage(): string
-    {
+    public function asHtmlImage(): string {
         return "data:image/png;base64," . base64_encode($this->image);
     }
 
     /** A raw binary data of the image. Can be saved to disk or uploaded */
-    public function asRaw()
-    {
+    public function asRaw(): string {
         return $this->image;
     }
 
@@ -75,15 +71,13 @@ class LabelImage
     * This bypasses the printer's font encoder allowing any
     * character / font
     */
-    public function toZpl(): string
-    {
+    public function toZpl(): string {
         self::$imageConverter ??= new ImageToZplConverter();
         return self::$imageConverter->rawImageToZpl($this->asRaw());
     }
 
     /** Save the image to disk */
-    public function saveAs(string $filepath)
-    {
+    public function saveAs(string $filepath): void {
         file_put_contents($filepath, $this->asRaw());
     }
 }

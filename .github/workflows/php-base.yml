@@ -16,10 +16,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-
-    - name: Configure Env
-      run: |
-        echo ::set-output name=status::$status
+    
+    - name: "Insall PHP"
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: "8.3"
+        extensions: imagick, gd
 
     - name: Validate composer.json and composer.lock
       run: composer validate
@@ -33,18 +35,21 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-php-
 
-    - name: Install Imagick and GD 
+    - name: Install GhostScript 
       run: |
           sudo apt-get install -y ghostscript
-          sudo apt install php8.3-imagick
-          sudo apt install php8.3-gd
-          php -r "print_r(imagick::queryFormats());"
 
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress
+    
+    - name: Verify Formatting
+      run: ./vendor/bin/php-cs-fixer check
+
+    - name: Verify phpstan 
+      run: composer analyze 
 
     - name: Configure Imagick Permissions 
-      run: sudo cp -f ./test_data/github-actions-imagick-config.xml /etc/ImageMagick-6/policy.xml
+      run: sudo cp -f ./.github/github-actions-imagick-config.xml /etc/ImageMagick-6/policy.xml
 
     - name: Run test suite
       run: composer test

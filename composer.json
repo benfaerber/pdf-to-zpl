@@ -2,7 +2,6 @@
     "name": "faerber/pdf-to-zpl",
     "description": "Convert a PDF file to a ZPL file",
     "type": "library",
-    "version": "0.4.6",
     "license": "MIT",
     "keywords": ["zebra-printers", "pdf", "zpl"],
     "homepage": "https://github.com/benfaerber/pdf-to-zpl",
@@ -18,8 +17,7 @@
         }
     ],
     "require": {
-        "guzzlehttp/guzzle": "^7.9",
-        "tightenco/collect": "^9"
+        "guzzlehttp/guzzle": "^7.9"
     },
     "extra": {
         "examples-dir": "example"
@@ -29,11 +27,21 @@
             "./vendor/bin/phpunit tests --verbose --bootstrap \"tests/TestUtils.php\""
         ],
         "benchmark": [
-            "php vendor/bin/phpbench run --report=main_report --report=plain_text_report --output=html_report --output=csv_report",
             "php vendor/bin/phpbench run --report=main_report --output=html_report"
         ],
         "format": [
             "PHP_CS_FIXER_IGNORE_ENV=true ./vendor/bin/php-cs-fixer fix ."
+        ],
+        "check-format": [
+            "PHP_CS_FIXER_IGNORE_ENV=true ./vendor/bin/php-cs-fixer check"
+        ],
+        "analyze": [
+            "./vendor/bin/phpstan analyze -c ./phpstan.neon"
+        ],
+        "verify": [
+            "composer check-format",
+            "composer analyze",
+            "composer test"
         ],
         "run-example": [
             "php example/example.php"
@@ -48,6 +56,7 @@
     "require-dev": {
         "phpunit/phpunit": "^9",
         "phpbench/phpbench": "^1.3",
-        "friendsofphp/php-cs-fixer": "^3.66"
+        "friendsofphp/php-cs-fixer": "^3.66",
+        "phpstan/phpstan": "^2.1"
     }
 }

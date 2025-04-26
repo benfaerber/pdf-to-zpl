@@ -12,11 +12,11 @@ permissions:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     strategy:
       matrix:
-          php-version: [8.2, 8.3, 8.4]
+          php-version: [8.3]
 
     steps:
     - uses: actions/checkout@v4
@@ -29,9 +29,6 @@ jobs:
 
     - name: Validate composer.json and composer.lock
       run: composer validate
-    
-    - name: Display PHP Info
-      run: php -r "phpinfo();"
 
     - name: Cache Composer packages
       id: composer-cache
@@ -41,11 +38,6 @@ jobs:
         key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
           ${{ runner.os }}-php-
-
-    - name: Configure Imagick Permissions and Dependencies 
-      run: |
-          sudo apt-get install -y ghostscript
-          sudo cp -f ./.github/github-actions-imagick-config.xml /etc/ImageMagick-6/policy.xml
 
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress --ignore-platform-reqs 

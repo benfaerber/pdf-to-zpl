@@ -1,0 +1,67 @@
+name: PHP Tests 
+
+on:
+  push:
+    branches: [ "master", "develop", "github-actions-test" ]
+  pull_request:
+    branches: [ "master", "develop", "github-actions-test" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+          php-version: [8.3]
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: "Install PHP"
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: "${{ matrix.php-version }}"
+        extensions: imagick, gd
+
+    - name: Validate composer.json and composer.lock
+      run: composer validate
+    
+    - name: Display PHP Info
+      run: php -r "phpinfo();"
+
+    - name: Cache Composer packages
+      id: composer-cache
+      uses: actions/cache@v3
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-php-
+
+    - name: Configure Imagick Permissions and Dependencies 
+      run: |
+          sudo apt-get install -y ghostscript
+          sudo cp -f ./.github/github-actions-imagick-config.xml /etc/ImageMagick-6/policy.xml
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress --ignore-platform-reqs 
+    
+    - name: Verify Formatting
+      run: PHP_CS_FIXER_IGNORE_ENV=true ./vendor/bin/php-cs-fixer check
+
+    - name: Verify phpstan 
+      run: composer analyze 
+
+    - name: Run phpunit tests 
+      run: composer test
+
+    - name: Show PHPUnit logs on failure
+      if: failure()
+      run: |
+        echo "Showing PHPUnit logs..."
+        cat phpunit-junit.xml || echo "No JUnit logs found"
+        cat phpunit-testdox.txt || echo "No TestDox logs found"

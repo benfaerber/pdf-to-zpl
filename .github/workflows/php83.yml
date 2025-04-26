@@ -8,6 +8,6 @@ on:
 
 jobs:
   call-php-base:
-    uses: ./.github/workflows/php.yml
+    uses: ./.github/workflows/php-base.yml
     with:
       php-version: '8.1'

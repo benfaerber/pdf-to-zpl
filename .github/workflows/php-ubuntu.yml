@@ -47,7 +47,7 @@ jobs:
           sudo apt-get install -y ghostscript
           sudo cp -f ./.github/github-actions-imagick-config.xml /etc/ImageMagick-6/policy.xml
 
-    - name: Install dependencies
+    - name: Install Composer Dependencies
       run: composer install --prefer-dist --no-progress --ignore-platform-reqs 
     
     - name: Verify Formatting

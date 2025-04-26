@@ -52,5 +52,5 @@ jobs:
       if: failure()
       run: |
         echo "Showing PHPUnit logs..."
-        cat phpunit-junit.xml || echo "No JUnit logs found"
-        cat phpunit-testdox.txt || echo "No TestDox logs found"
+        if (Test-Path phpunit-junit.xml) { Get-Content phpunit-junit.xml } else { echo "No JUnit logs found" }
+        if (Test-Path phpunit-testdox.txt) { Get-Content phpunit-testdox.txt } else { echo "No TestDox logs found" }

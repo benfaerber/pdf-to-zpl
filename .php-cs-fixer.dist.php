@@ -12,5 +12,6 @@ return (new PhpCsFixer\Config())
         'braces' => [
             'position_after_functions_and_oop_constructs' => 'same',
         ],
+        'no_unused_imports' => true,
     ])
     ->setFinder($finder);

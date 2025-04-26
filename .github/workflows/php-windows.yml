@@ -39,7 +39,10 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-php-
 
-    - name: Install dependencies
+    - name: Install GhostScript
+      run: choco install ghostscript --no-progress
+
+    - name: Install Composer Dependencies
       run: composer install --prefer-dist --no-progress --ignore-platform-reqs 
 
     - name: Run phpunit tests 

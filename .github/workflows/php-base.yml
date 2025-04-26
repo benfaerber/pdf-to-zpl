@@ -16,6 +16,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    
+    - name: "Insall PHP"
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: "8.3"
+        extensions: imagick, gd
 
     - name: Validate composer.json and composer.lock
       run: composer validate
@@ -29,11 +35,9 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-php-
 
-    - name: Install Imagick and GD 
+    - name: Install GhostScript 
       run: |
           sudo apt-get install -y ghostscript
-          sudo apt install php8.3-imagick
-          sudo apt install php8.3-gd
 
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress

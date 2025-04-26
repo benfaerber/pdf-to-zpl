@@ -31,7 +31,7 @@ jobs:
       run: composer validate
     
     - name: Display PHP Info
-      run: php -r "phpinfo();"
+      run: php -r "phpversion();"
 
     - name: Cache Composer packages
       id: composer-cache

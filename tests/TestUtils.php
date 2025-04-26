@@ -58,4 +58,10 @@ class TestUtils {
         $this->logger->info("Texts are {$avg}% similar ({$context})");
         return $avg;
     }
+
+    /** @param string[] $pages */
+    public function percentSimilarToExpected(array $pages, string $expectedFilename, string $context): float {
+        $expectedPages = $this->loadExpectedPages($expectedFilename, count($pages));
+        return $this->getPercentSimilar($pages, $expectedPages, $context);
+    }
 }

@@ -21,9 +21,9 @@ final class CanConvertPdfTest extends TestCase {
         );
 
         // Should match the previously generated data
-        $this->assertGreaterThan(95, $utils->getPercentSimilar(
+        $this->assertGreaterThan(95, $utils->percentSimilarToExpected(
             $pages,
-            $utils->loadExpectedPages("expected_label", count($pages)),
+            "expected_label",
             "can convert endicia pdf"
         ));
     }
@@ -41,9 +41,9 @@ final class CanConvertPdfTest extends TestCase {
         );
 
         // Should match the previously generated data
-        $this->assertGreaterThan(95, $utils->getPercentSimilar(
+        $this->assertGreaterThan(95, $utils->percentSimilarToExpected(
             $pages,
-            $utils->loadExpectedPages("expected_donkey", count($pages)),
+            "expected_donkey",
             "can convert donkey",
         ));
     }

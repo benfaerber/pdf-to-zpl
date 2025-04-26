@@ -1,5 +1,7 @@
 <?php
 
+use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
+
 $finder = PhpCsFixer\Finder::create()
     ->in([
         __DIR__ . "/src",
@@ -9,10 +11,8 @@ $finder = PhpCsFixer\Finder::create()
     ]);
 
 return (new PhpCsFixer\Config())
+    ->setParallelConfig(ParallelConfigFactory::detect())
     ->setRules([
         '@PSR12' => false,
-        'braces' => [
-            'position_after_functions_and_oop_constructs' => 'same',
-        ],
     ])
     ->setFinder($finder);

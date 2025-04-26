@@ -1,8 +1,6 @@
 <?php
 
-use Faerber\PdfToZpl\Images\ImageProcessorOption;
 use Faerber\PdfToZpl\ImageToZplConverter;
-use Faerber\PdfToZpl\PdfToZplConverter;
 use Faerber\PdfToZpl\Settings\ConverterSettings;
 
 /**

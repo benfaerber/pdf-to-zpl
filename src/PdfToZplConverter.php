@@ -2,10 +2,9 @@
 
 namespace Faerber\PdfToZpl;
 
-use Exception;
 use Faerber\PdfToZpl\Images\ImagickProcessor;
 use Faerber\PdfToZpl\Settings\ConverterSettings;
-use Illuminate\Support\Collection;
+use Faerber\PdfToZpl\Settings\Collection;
 use Imagick;
 use ImagickException;
 use ImagickPixel;
@@ -60,22 +59,21 @@ class PdfToZplConverter implements ZplConverterService {
         try {
             $img->readImageBlob($pdfData);
             $this->settings->log("Read blob...");
-        } catch (ImagickException $e) {
-            if ($e->getCode() === self::IMAGICK_SECURITY_CODE) {
+        } catch (ImagickException $exception) {
+            if ($exception->getCode() === self::IMAGICK_SECURITY_CODE) {
                 throw new PdfToZplException(
                     "You need to enable PDF reading and writing in your Imagick settings (see docs for more details)", 
-                    code: 10, 
-                    previous: $e
+                    code: self::IMAGICK_SECURITY_CODE, 
+                    previous: $exception
                 );
             }
             // No special handling
-            throw $e;
+            throw $exception;
         }
 
         $pages = $img->getNumberImages();
         $this->settings->log("Page count = " . $pages);
         $processor = new ImagickProcessor($img, $this->settings);
-
         $images = new Collection([]);
         for ($i = 0; $i < $pages; $i++) {
             $this->settings->log("Working on page " . $i);
@@ -104,7 +102,6 @@ class PdfToZplConverter implements ZplConverterService {
     */
     public function convertFromBlob(string $pdfData): array {
         // TODO: why does toArray convert this to mixed? */ 
-        /** @var string[] */
         return $this->pdfToZpls($pdfData)->toArray();
     }
 

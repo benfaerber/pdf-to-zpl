@@ -2,10 +2,9 @@
 
 namespace Faerber\PdfToZpl;
 
-use Exception;
 use Faerber\PdfToZpl\Settings\ConverterSettings;
 use Faerber\PdfToZpl\Images\ImageProcessor;
-use Illuminate\Support\Collection;
+use Faerber\PdfToZpl\Settings\Collection;
 
 /**
  * Convert an Image to Zpl
@@ -75,11 +74,9 @@ class ImageToZplConverter implements ZplConverterService {
             $bitmap
         ]);
 
-        return (new Collection([
-            self::START_CMD,
-            $parameters->implode(","),
-            self::END_CMD,
-        ]))->implode('');
+        return self::START_CMD
+            . $parameters->implode(",")
+            . self::END_CMD;
     }
 
     /**

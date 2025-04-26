@@ -15,7 +15,7 @@ class EchoLogger implements LoggerInterface {
         if ($level instanceof Stringable || ! is_string($level)) {
             throw new Exception("Level must be a string!");
         } 
-        echo "[{$level}] {$message}" . ($context ? " (Context: " . json_encode($context) . ")" : "") . "\n";
+        echo "[{$level}] [pdf-to-zpl] {$message}" . ($context ? " (Context: " . json_encode($context) . ")" : "") . "\n";
     }
 
     /**

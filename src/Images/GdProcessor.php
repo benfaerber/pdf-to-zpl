@@ -2,7 +2,6 @@
 
 namespace Faerber\PdfToZpl\Images;
 
-use Exception;
 use Faerber\PdfToZpl\PdfToZplException;
 use Faerber\PdfToZpl\Settings\ConverterSettings;
 use GdImage;

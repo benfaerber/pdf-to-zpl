@@ -1,7 +1,7 @@
 <h1>
 PDF to ZPL
 <a href="https://packagist.org/packages/faerber/pdf-to-zpl"><img src="https://img.shields.io/packagist/v/faerber/pdf-to-zpl" /></a>
-<a href="https://github.com/benfaerber/pdf-to-zpl/actions"><img src="https://github.com/benfaerber/pdf-to-zpl/actions/workflows/php.yml/badge.svg" /></a>
+<a href="https://github.com/benfaerber/pdf-to-zpl/actions"><img src="https://github.com/benfaerber/pdf-to-zpl/actions/workflows/php83.yml/badge.svg" /></a>
 <a href="phpstan.neon"><img src="https://img.shields.io/badge/PHPStan-level%2010-brightgreen?logo=php" /></a>
 <a href="LICENSE"><img src="https://img.shields.io/github/license/benfaerber/pdf-to-zpl?color=yellowgreen" /></a>
 </h1>
@@ -125,7 +125,7 @@ Run `composer test`. Testing is done via PHP Unit.
 
 This package works on PHP 8.1 but the test data was generated with 8.3. 
 There will be tiny byte differences between these 2 versions. Use PHP 8.3 (or Github Actions which uses 8.3) to use the test suite.
-If you make major changes you may need to regenerate the test data.
+If you make major changes you may need to regenerate the test data (tests pass if each file is at least 95% similar to the test data generated with PHP 8.3 on my linux box).
 For example modifying scaling code where the output is correct but the test data is outdated.
 Run `composer generate-test-data` and manually verify the images are rendered correctly.
 

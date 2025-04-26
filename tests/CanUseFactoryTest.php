@@ -11,7 +11,7 @@ final class CanUseFactoryTest extends TestCase {
     public function testCanUseFactoryForImage(): void {
         $utils = new TestUtils(new EchoLogger);
         $duck = $utils->testData("duck.png");
-        $converter = ZplConverterFactory::converterFromFile($duck, new ConverterSettings(verboseLogs: true));
+        $converter = ZplConverterFactory::converterFromFile($duck, new ConverterSettings(verboseLogs: true, logger: $utils->logger));
         $pages = $converter->convertFromFile($duck);
         $expectedPageCount = 1;
 

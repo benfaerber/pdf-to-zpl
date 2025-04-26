@@ -12,6 +12,7 @@ final class CanRotatePdfTest extends TestCase {
         $utils = new TestUtils(new EchoLogger);
         $converter = new PdfToZplConverter(new ConverterSettings(
             verboseLogs: true,
+            logger: $utils->logger,
             rotateDegrees: 90,
         ));
         $pages = $converter->convertFromFile($utils->testData("usps-label-landscape.pdf"));

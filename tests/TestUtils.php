@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Illuminate\Support\Collection;
 use Psr\Log\LoggerInterface;
 
 class TestUtils {

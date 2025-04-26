@@ -1,4 +1,4 @@
-name: PHP Tests 
+name: Windows PHP Tests 
 
 on:
   push:
@@ -41,12 +41,6 @@ jobs:
 
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress --ignore-platform-reqs 
-    
-    - name: Verify Formatting
-      run: ./vendor/bin/php-cs-fixer check
-
-    - name: Verify phpstan 
-      run: composer analyze 
 
     - name: Run phpunit tests 
       run: composer test

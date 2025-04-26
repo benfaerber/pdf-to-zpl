@@ -1,4 +1,4 @@
-name: PHP Tests 
+name: Ubuntu PHP Tests 
 
 on:
   push:

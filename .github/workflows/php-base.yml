@@ -48,7 +48,7 @@ jobs:
           sudo cp -f ./.github/github-actions-imagick-config.xml /etc/ImageMagick-6/policy.xml
 
     - name: Install dependencies
-      run: composer install --prefer-dist --no-progress
+      run: composer install --prefer-dist --no-progress --ignore-platform-reqs 
     
     - name: Verify Formatting
       run: ./vendor/bin/php-cs-fixer check

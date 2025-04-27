@@ -40,7 +40,7 @@ foreach ($pages as $page) {
 }
 ```
 
-## Environment Setup:
+## Linux Environment Setup:
 
 The minimum version for this package is `8.1`.
 
@@ -76,7 +76,13 @@ Change to:
 If this line doesn't exist at all, add it. You'll only run into this with tiny linux boxes like Github Actions. 
 
 
-I've only tested this library on Linux and Mac so if you get it working on windows feel free to open a PR!
+### Windows Environment Setup:
+Install `GhostScript` with `choco` and Imagick and GD extensions.
+
+```sh
+choco install ghostscript
+```
+
 
 ## Converting Images:
 ```php

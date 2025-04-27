@@ -1,10 +1,15 @@
 <h1>
 PDF to ZPL
 <a href="https://packagist.org/packages/faerber/pdf-to-zpl"><img src="https://img.shields.io/packagist/v/faerber/pdf-to-zpl" /></a>
-<a href="https://github.com/benfaerber/pdf-to-zpl/actions"><img src="https://github.com/benfaerber/pdf-to-zpl/actions/workflows/php83.yml/badge.svg" /></a>
+<a href="https://github.com/benfaerber/pdf-to-zpl/actions"><img src="https://github.com/benfaerber/pdf-to-zpl/actions/workflows/php-ubuntu.yml/badge.svg" /></a>
+<a href="https://github.com/benfaerber/pdf-to-zpl/actions"><img src="https://github.com/benfaerber/pdf-to-zpl/actions/workflows/php-windows.yml/badge.svg" /></a>
+</h1>
+
+<p>
 <a href="phpstan.neon"><img src="https://img.shields.io/badge/PHPStan-level%2010-brightgreen?logo=php" /></a>
 <a href="LICENSE"><img src="https://img.shields.io/github/license/benfaerber/pdf-to-zpl?color=yellowgreen" /></a>
-</h1>
+</p>
+
 
 <img src="./static/donkey-label.jpg" alt="A label created with pdf-to-zpl" />
 
@@ -35,7 +40,7 @@ foreach ($pages as $page) {
 }
 ```
 
-## Environment Setup:
+## Linux Environment Setup:
 
 The minimum version for this package is `8.1`.
 
@@ -71,7 +76,13 @@ Change to:
 If this line doesn't exist at all, add it. You'll only run into this with tiny linux boxes like Github Actions. 
 
 
-I've only tested this library on Linux and Mac so if you get it working on windows feel free to open a PR!
+### Windows Environment Setup:
+Install `GhostScript` with `choco` and Imagick and GD extensions.
+
+```sh
+choco install ghostscript
+```
+
 
 ## Converting Images:
 ```php

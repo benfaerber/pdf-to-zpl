@@ -25,9 +25,9 @@ final class CanRotatePdfTest extends TestCase {
         );
 
         // Should match the previously generated data
-        $this->assertGreaterThan(95, $utils->getPercentSimilar(
+        $this->assertGreaterThan(95, $utils->percentSimilarToExpected(
             $pages,
-            $utils->loadExpectedPages("expected_usps_landscape", count($pages)),
+            "expected_usps_landscape",
             "can rotate landscape"
         ));
     }

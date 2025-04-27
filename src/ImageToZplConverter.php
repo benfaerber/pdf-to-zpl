@@ -41,7 +41,8 @@ class ImageToZplConverter implements ZplConverterService {
 
             // Convert bits to bytes
             $bytes = str_split($bits, length: 8);
-            $lastByte = array_pop($bytes); 
+            $lastByte = array_pop($bytes);
+            /** @var string|null $lastByte */
             if ($lastByte === null) {
                 throw new PdfToZplException("Failed to get last byte");
             }

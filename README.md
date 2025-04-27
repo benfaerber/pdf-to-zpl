@@ -143,6 +143,15 @@ Run `composer generate-test-data` and manually verify the images are rendered co
 ## Benchmarking
 Run `composer benchmark`. Benchmarking is done via `phpbench`. 
 
+Here's some basic performance information:
+- Converting a PNG to ZPL: `668.26ms`
+- Convert a 3 page PDF label to ZPL with GD Backend: `1.8s`
+- Convert a 3 page PDF label to ZPL with Imagick Backend: `5.4s`
+
+This was run on my workstation. (`AMD Ryzen 9 7950x 16-core`, `32Gib`)
+
+See [phpbench output](.phpbench/html/index.html) for more details. 
+
 ## Formatting
 Run `composer format`. Formatting is done via `php-cs-fixer`. 
 

@@ -2,6 +2,7 @@
 
 ## Logging 
 This library uses <a href="https://www.php-fig.org/psr/psr-3/">PSR Logging</a> which means it can integrate seamlessly into most frameworks and libraries.
+
 To turn on logging for Laravel:
 ```php
 <?php
@@ -17,7 +18,9 @@ $converter = new PdfToZplConverter(new ConverterSettings(
 ```
 
 ## Using without GD (not recommended)
+If for whatever reason you can't install GD you can use Imagick only (which is default in a lot of PHP environments).
 This library can work with only Imagick but GD is recommended because it's a lot faster (see [benchmarks](./.phpbench/html/index.html) for more details)! 
+
 If you would like to only use Imagick use these settings:
 ```php
 <?php

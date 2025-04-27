@@ -114,22 +114,11 @@ $labelImage = new LabelImage(
 $labelImage->saveAs("my_label.png");
 ```
 
-## Using without GD (no installs needed)
-This library can work with only Imagick but GD is recommended because it's a lot faster (see [benchmarks](./.phpbench/html/index.html) for more details)! 
-If you would like to only use Imagick use these settings:
-```php
-<?php
+## Settings 
+There are many settings you can use to configure the conversion.
+You can use Imagick instead of GD, rotate and resize labels etc.
 
-use Faerber\PdfToZpl\PdfToZplConverter;
-use Faerber\PdfToZpl\Settings\ConverterSettings;
-use Faerber\PdfToZpl\Images\ImageProcessorOption;
-
-$converter = new PdfToZplConverter(
-    new ConverterSettings(
-        imageProcessorOption: ImageProcessorOption::Imagick,
-    )
-);
-```
+See <a href="_docs/settings.md">Settings</a> for more details.
 
 ## Unit Testing
 Run `composer test`. Testing is done via PHP Unit. 

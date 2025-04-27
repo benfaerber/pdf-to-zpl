@@ -65,6 +65,7 @@ $converter = new ImageToZplConverter(
     new ConverterSettings(
         labelWidth: (int)($size * 1.5),
         labelHeight: (int)($size * 0.7),
+        dpi: 203,
+    );
     )
-);
 ```

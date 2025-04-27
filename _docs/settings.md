@@ -9,7 +9,6 @@ To turn on logging for Laravel:
 
 use Faerber\PdfToZpl\PdfToZplConverter;
 use Faerber\PdfToZpl\Settings\ConverterSettings;
-use Faerber\PdfToZpl\Images\ImageProcessorOption;
 
 $converter = new PdfToZplConverter(new ConverterSettings(
     verboseLogs: true,
@@ -37,17 +36,35 @@ $converter = new PdfToZplConverter(
 ```
 
 ## Rotating Labels:
-If you are given a landscape label (ie an international label with a customs form). You can rotate it:
+If you are given a landscape label (ie an international label with a customs form). 
 
+You can rotate it:
 ```php
 <?php
 
 use Faerber\PdfToZpl\PdfToZplConverter;
 use Faerber\PdfToZpl\Settings\ConverterSettings;
-use Faerber\PdfToZpl\Images\ImageProcessorOption;
-
 
 $converter = new PdfToZplConverter(new ConverterSettings(
     rotateDegrees: 90,
 ));
+```
+
+## Custom Sizes:
+By default this works with 4x6 label printers. You can use any size you want.
+
+Here's an example for the `ZD410` Desktop Printer (a really small label printer):
+```php
+<?php
+
+use Faerber\PdfToZpl\ImageToZplConverter;
+use Faerber\PdfToZpl\Settings\ConverterSettings;
+
+$size = 170;
+$converter = new ImageToZplConverter(
+    new ConverterSettings(
+        labelWidth: (int)($size * 1.5),
+        labelHeight: (int)($size * 0.7),
+    )
+);
 ```

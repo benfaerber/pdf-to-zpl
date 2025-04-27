@@ -32,6 +32,9 @@ class ImagickProcessor implements ImageProcessor {
         return $avgColor < 0.5;
     }
 
+    /**
+    * @throws PdfToZplException
+    */
     public function readBlob(string $data): static {
         $blob = $this->img->readImageBlob($data);
         if (! $blob) {

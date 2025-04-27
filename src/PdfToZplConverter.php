@@ -51,6 +51,7 @@ class PdfToZplConverter implements ZplConverterService {
     /**
     * @param string $pdfData Raw PDF data as a string
     * @return Collection<int, string> A list of raw PNG data as a string
+    * @throws PdfToZplException
     */
     private function pdfToImages(string $pdfData): Collection {
         $img = new Imagick();
@@ -108,6 +109,8 @@ class PdfToZplConverter implements ZplConverterService {
     /**
     * Load a PDF file and convert it into an array of ZPL commands.
     * Each page of the PDF is 1 ZPL command.
+    * 
+    * @throws PdfToZplException
     */
     public function convertFromFile(string $filepath): array {
         $rawData = @file_get_contents($filepath);

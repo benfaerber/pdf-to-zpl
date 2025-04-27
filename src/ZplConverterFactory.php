@@ -11,6 +11,9 @@ class ZplConverterFactory {
         ImageToZplConverter::class,
     ];
 
+    /**
+    * @throws PdfToZplException
+    */
     public static function converterFromFile(string $filepath, ConverterSettings|null $settings = null): ZplConverterService {
         $ext = pathinfo($filepath, PATHINFO_EXTENSION);
         $settings ??= new ConverterSettings();

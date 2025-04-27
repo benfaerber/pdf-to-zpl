@@ -24,6 +24,9 @@ class ImageToZplConverter implements ZplConverterService {
     public const END_CMD = "^XZ";
     private const ENCODE_CMD = "^GFA";
 
+    /**
+    * @throws PdfToZplException
+    */
     public function convertImageToZpl(ImageProcessor $image): string {
         // Width in bytes
         $width = (int) ceil($image->width() / 8);

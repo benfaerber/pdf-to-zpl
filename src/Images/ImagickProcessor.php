@@ -2,7 +2,6 @@
 
 namespace Faerber\PdfToZpl\Images;
 
-use Faerber\PdfToZpl\ImagickPixelStub;
 use Faerber\PdfToZpl\PdfToZplException;
 use Faerber\PdfToZpl\Settings\ConverterSettings;
 use Imagick;
@@ -33,6 +32,9 @@ class ImagickProcessor implements ImageProcessor {
         return $avgColor < 0.5;
     }
 
+    /**
+    * @throws PdfToZplException
+    */
     public function readBlob(string $data): static {
         $blob = $this->img->readImageBlob($data);
         if (! $blob) {

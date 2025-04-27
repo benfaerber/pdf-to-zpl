@@ -1,10 +1,15 @@
 <h1>
 PDF to ZPL
 <a href="https://packagist.org/packages/faerber/pdf-to-zpl"><img src="https://img.shields.io/packagist/v/faerber/pdf-to-zpl" /></a>
-<a href="https://github.com/benfaerber/pdf-to-zpl/actions"><img src="https://github.com/benfaerber/pdf-to-zpl/actions/workflows/php.yml/badge.svg" /></a>
+<a href="https://github.com/benfaerber/pdf-to-zpl/actions"><img src="https://github.com/benfaerber/pdf-to-zpl/actions/workflows/php-ubuntu.yml/badge.svg" /></a>
+<a href="https://github.com/benfaerber/pdf-to-zpl/actions"><img src="https://github.com/benfaerber/pdf-to-zpl/actions/workflows/php-windows.yml/badge.svg" /></a>
+</h1>
+
+<p>
 <a href="phpstan.neon"><img src="https://img.shields.io/badge/PHPStan-level%2010-brightgreen?logo=php" /></a>
 <a href="LICENSE"><img src="https://img.shields.io/github/license/benfaerber/pdf-to-zpl?color=yellowgreen" /></a>
-</h1>
+</p>
+
 
 <img src="./static/donkey-label.jpg" alt="A label created with pdf-to-zpl" />
 
@@ -35,7 +40,7 @@ foreach ($pages as $page) {
 }
 ```
 
-## Environment Setup:
+## Linux Environment Setup:
 
 The minimum version for this package is `8.1`.
 
@@ -71,7 +76,13 @@ Change to:
 If this line doesn't exist at all, add it. You'll only run into this with tiny linux boxes like Github Actions. 
 
 
-I've only tested this library on Linux and Mac so if you get it working on windows feel free to open a PR!
+### Windows Environment Setup:
+Install `GhostScript` with `choco` and Imagick and GD extensions.
+
+```sh
+choco install ghostscript
+```
+
 
 ## Converting Images:
 ```php
@@ -103,22 +114,11 @@ $labelImage = new LabelImage(
 $labelImage->saveAs("my_label.png");
 ```
 
-## Using without GD (no installs needed)
-This library can work with only Imagick but GD is recommended because it's a lot faster (see [benchmarks](./.phpbench/html/index.html) for more details)! 
-If you would like to only use Imagick use these settings:
-```php
-<?php
+## Settings 
+There are many settings you can use to configure the conversion.
+You can use Imagick instead of GD, rotate and resize labels etc.
 
-use Faerber\PdfToZpl\PdfToZplConverter;
-use Faerber\PdfToZpl\Settings\ConverterSettings;
-use Faerber\PdfToZpl\Images\ImageProcessorOption;
-
-$converter = new PdfToZplConverter(
-    new ConverterSettings(
-        imageProcessorOption: ImageProcessorOption::Imagick,
-    )
-);
-```
+See <a href="_docs/settings.md">Settings</a> for more details.
 
 ## Unit Testing
 Run `composer test`. Testing is done via PHP Unit. 
@@ -131,6 +131,15 @@ Run `composer generate-test-data` and manually verify the images are rendered co
 
 ## Benchmarking
 Run `composer benchmark`. Benchmarking is done via `phpbench`. 
+
+Here's some basic performance information:
+- Converting a PNG to ZPL: `668.26ms`
+- Convert a 3 page PDF label to ZPL with GD Backend: `1.8s`
+- Convert a 3 page PDF label to ZPL with Imagick Backend: `5.4s`
+
+This was run on my workstation. (`AMD Ryzen 9 7950x 16-core`, `32Gib`)
+
+See [phpbench output](.phpbench/html/index.html) for more details. 
 
 ## Formatting
 Run `composer format`. Formatting is done via `php-cs-fixer`. 

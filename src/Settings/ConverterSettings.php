@@ -31,9 +31,15 @@ class ConverterSettings {
     /** How many degrees to rotate the label. Used for landscape PDFs */
     public int|null $rotateDegrees;
 
+    /** The Image Processing backend to use (example: imagick or GD) */
     public ImageProcessor $imageProcessor;
 
+    /** Log each step of the process */
     public bool $verboseLogs;
+    
+    /** The logger to use for `verboseLogs`
+    * If using Laravel pass: `logger()` 
+    */
     public LoggerInterface $logger;
 
     public function __construct(
@@ -60,6 +66,10 @@ class ConverterSettings {
         $this->imageProcessor = $imageProcessorOption->processor($this);
     }
 
+    public static function default(): self {
+        return new self();
+    }
+
     private function verifyDependencies(ImageProcessorOption $option): void {
         if (! extension_loaded('gd') && $option === ImageProcessorOption::Gd) {
             throw new PdfToZplException("You must install the GD image library or change imageProcessorOption to ImageProcessOption::Imagick");
@@ -75,10 +85,6 @@ class ConverterSettings {
         }
     }
 
-    public static function default(): self {
-        return new self();
-    }
-
     public function log(mixed ...$messages): void {
         if (! $this->verboseLogs) {
             return;
@@ -86,8 +92,8 @@ class ConverterSettings {
         foreach ($messages as $message) {
             $message = is_string($message) || $message instanceof Stringable
                 ? (string)$message
-                : json_encode($message); 
-            $this->logger->debug("[pdf-to-zpl] {$message}");
+                : (string)json_encode($message); 
+            $this->logger->debug($message);
         }
     }
 }

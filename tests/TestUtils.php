@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-use Illuminate\Support\Collection;
 use Psr\Log\LoggerInterface;
 
 class TestUtils {
-    public function __construct(private LoggerInterface $logger) {
+    public function __construct(public LoggerInterface $logger) {
     }
 
     /** Small things like PHP version, imagick version, etc
@@ -58,5 +57,11 @@ class TestUtils {
         $avg = $acc / $comps;
         $this->logger->info("Texts are {$avg}% similar ({$context})");
         return $avg;
+    }
+
+    /** @param string[] $pages */
+    public function percentSimilarToExpected(array $pages, string $expectedFilename, string $context): float {
+        $expectedPages = $this->loadExpectedPages($expectedFilename, count($pages));
+        return $this->getPercentSimilar($pages, $expectedPages, $context);
     }
 }

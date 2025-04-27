@@ -12,6 +12,7 @@ final class CanRotatePdfTest extends TestCase {
         $utils = new TestUtils(new EchoLogger);
         $converter = new PdfToZplConverter(new ConverterSettings(
             verboseLogs: true,
+            logger: $utils->logger,
             rotateDegrees: 90,
         ));
         $pages = $converter->convertFromFile($utils->testData("usps-label-landscape.pdf"));
@@ -24,9 +25,9 @@ final class CanRotatePdfTest extends TestCase {
         );
 
         // Should match the previously generated data
-        $this->assertGreaterThan(95, $utils->getPercentSimilar(
+        $this->assertGreaterThan(95, $utils->percentSimilarToExpected(
             $pages,
-            $utils->loadExpectedPages("expected_usps_landscape", count($pages)),
+            "expected_usps_landscape",
             "can rotate landscape"
         ));
     }

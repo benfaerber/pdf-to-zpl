@@ -2,11 +2,7 @@
 
 namespace Faerber\PdfToZpl;
 
-use Exception;
-use Faerber\PdfToZpl\ImageToZplConverter;
-use Faerber\PdfToZpl\PdfToZplConverter;
 use Faerber\PdfToZpl\Settings\ConverterSettings;
-use Faerber\PdfToZpl\ZplConverterService;
 
 class ZplConverterFactory {
     /** @var class-string<ZplConverterService>[] */
@@ -15,6 +11,9 @@ class ZplConverterFactory {
         ImageToZplConverter::class,
     ];
 
+    /**
+    * @throws PdfToZplException
+    */
     public static function converterFromFile(string $filepath, ConverterSettings|null $settings = null): ZplConverterService {
         $ext = pathinfo($filepath, PATHINFO_EXTENSION);
         $settings ??= new ConverterSettings();

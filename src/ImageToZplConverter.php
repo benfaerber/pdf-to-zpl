@@ -2,10 +2,9 @@
 
 namespace Faerber\PdfToZpl;
 
-use Exception;
 use Faerber\PdfToZpl\Settings\ConverterSettings;
 use Faerber\PdfToZpl\Images\ImageProcessor;
-use Illuminate\Support\Collection;
+use Faerber\PdfToZpl\Settings\Collection;
 
 /**
  * Convert an Image to Zpl
@@ -25,6 +24,9 @@ class ImageToZplConverter implements ZplConverterService {
     public const END_CMD = "^XZ";
     private const ENCODE_CMD = "^GFA";
 
+    /**
+    * @throws PdfToZplException
+    */
     public function convertImageToZpl(ImageProcessor $image): string {
         // Width in bytes
         $width = (int) ceil($image->width() / 8);
@@ -42,7 +44,8 @@ class ImageToZplConverter implements ZplConverterService {
 
             // Convert bits to bytes
             $bytes = str_split($bits, length: 8);
-            $lastByte = array_pop($bytes); 
+            $lastByte = array_pop($bytes);
+            /** @var string|null $lastByte */
             if ($lastByte === null) {
                 throw new PdfToZplException("Failed to get last byte");
             }
@@ -75,11 +78,9 @@ class ImageToZplConverter implements ZplConverterService {
             $bitmap
         ]);
 
-        return (new Collection([
-            self::START_CMD,
-            $parameters->implode(","),
-            self::END_CMD,
-        ]))->implode('');
+        return self::START_CMD
+            . $parameters->implode(",")
+            . self::END_CMD;
     }
 
     /**

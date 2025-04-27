@@ -3,7 +3,6 @@
 namespace Faerber\PdfToZpl;
 
 use GuzzleHttp\Client as GuzzleClient;
-use Exception;
 use Faerber\PdfToZpl\Settings\LabelDirection;
 
 /**

@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Faerber\PdfToZpl\Images\ImageProcessorOption;
 use Faerber\PdfToZpl\PdfToZplConverter;
 use Faerber\PdfToZpl\Settings\ConverterSettings;
 use Faerber\PdfToZpl\Settings\EchoLogger;
@@ -11,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 final class CanConvertPdfTest extends TestCase {
     public function testCanConvertEndiciaPdf(): void {
         $utils = new TestUtils(new EchoLogger);
-        $converter = new PdfToZplConverter(new ConverterSettings(verboseLogs: true));
+        $converter = new PdfToZplConverter(new ConverterSettings(verboseLogs: true, logger: $utils->logger));
         $pages = $converter->convertFromFile($utils->testData("endicia-shipping-label.pdf"));
         $expectedPageCount = 3;
 
@@ -22,9 +21,9 @@ final class CanConvertPdfTest extends TestCase {
         );
 
         // Should match the previously generated data
-        $this->assertGreaterThan(95, $utils->getPercentSimilar(
+        $this->assertGreaterThan(95, $utils->percentSimilarToExpected(
             $pages,
-            $utils->loadExpectedPages("expected_label", count($pages)),
+            "expected_label",
             "can convert endicia pdf"
         ));
     }
@@ -42,9 +41,9 @@ final class CanConvertPdfTest extends TestCase {
         );
 
         // Should match the previously generated data
-        $this->assertGreaterThan(95, $utils->getPercentSimilar(
+        $this->assertGreaterThan(95, $utils->percentSimilarToExpected(
             $pages,
-            $utils->loadExpectedPages("expected_donkey", count($pages)),
+            "expected_donkey",
             "can convert donkey",
         ));
     }

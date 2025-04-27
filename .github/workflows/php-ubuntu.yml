@@ -1,4 +1,4 @@
-name: PHP Tests 
+name: Ubuntu PHP Tests 
 
 on:
   push:
@@ -14,11 +14,24 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+          php-version: [8.1, 8.2, 8.3, 8.4]
+
     steps:
     - uses: actions/checkout@v4
+    
+    - name: "Install PHP"
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: "${{ matrix.php-version }}"
+        extensions: imagick, gd
 
     - name: Validate composer.json and composer.lock
       run: composer validate
+    
+    - name: Display PHP Info
+      run: php -r "phpversion();"
 
     - name: Cache Composer packages
       id: composer-cache
@@ -29,25 +42,21 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-php-
 
-    - name: Install Imagick and GD 
+    - name: Configure Imagick Permissions and Dependencies 
       run: |
           sudo apt-get install -y ghostscript
-          sudo apt install php8.3-imagick
-          sudo apt install php8.3-gd
+          sudo cp -f ./.github/github-actions-imagick-config.xml /etc/ImageMagick-6/policy.xml
 
-    - name: Install dependencies
-      run: composer install --prefer-dist --no-progress
+    - name: Install Composer Dependencies
+      run: composer install --prefer-dist --no-progress --ignore-platform-reqs 
     
     - name: Verify Formatting
-      run: ./vendor/bin/php-cs-fixer check
+      run: PHP_CS_FIXER_IGNORE_ENV=true ./vendor/bin/php-cs-fixer check
 
     - name: Verify phpstan 
       run: composer analyze 
 
-    - name: Configure Imagick Permissions 
-      run: sudo cp -f ./.github/github-actions-imagick-config.xml /etc/ImageMagick-6/policy.xml
-
-    - name: Run test suite
+    - name: Run phpunit tests 
       run: composer test
 
     - name: Show PHPUnit logs on failure

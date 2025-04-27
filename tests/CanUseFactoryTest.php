@@ -11,7 +11,7 @@ final class CanUseFactoryTest extends TestCase {
     public function testCanUseFactoryForImage(): void {
         $utils = new TestUtils(new EchoLogger);
         $duck = $utils->testData("duck.png");
-        $converter = ZplConverterFactory::converterFromFile($duck, new ConverterSettings(verboseLogs: true));
+        $converter = ZplConverterFactory::converterFromFile($duck, new ConverterSettings(verboseLogs: true, logger: $utils->logger));
         $pages = $converter->convertFromFile($duck);
         $expectedPageCount = 1;
 
@@ -21,9 +21,9 @@ final class CanUseFactoryTest extends TestCase {
         );
 
         // Should match the previously generated data
-        $this->assertGreaterThan(95, $utils->getPercentSimilar(
+        $this->assertGreaterThan(95, $utils->percentSimilarToExpected(
             $pages,
-            $utils->loadExpectedPages("expected_duck", count($pages)),
+            "expected_duck",
             "can use factory for image"
         ));
     }
@@ -43,9 +43,9 @@ final class CanUseFactoryTest extends TestCase {
         );
 
         // Should match the previously generated data
-        $this->assertGreaterThan(95, $utils->getPercentSimilar(
+        $this->assertGreaterThan(95, $utils->percentSimilarToExpected(
             $pages,
-            $utils->loadExpectedPages("expected_label", count($pages)),
+            "expected_label",
             "can use factory for pdf"
         ));
     }

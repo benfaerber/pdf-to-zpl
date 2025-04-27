@@ -17,8 +17,7 @@
         }
     ],
     "require": {
-        "guzzlehttp/guzzle": "^7.9",
-        "illuminate/collections": "^12.9"
+        "guzzlehttp/guzzle": "^7.9"
     },
     "extra": {
         "examples-dir": "example"

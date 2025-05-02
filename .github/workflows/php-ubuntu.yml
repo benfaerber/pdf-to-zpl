@@ -29,9 +29,6 @@ jobs:
 
     - name: Validate composer.json and composer.lock
       run: composer validate
-    
-    - name: Display PHP Info
-      run: php -r "phpversion();"
 
     - name: Cache Composer packages
       id: composer-cache

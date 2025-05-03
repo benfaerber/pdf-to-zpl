@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
+use Faerber\PdfToZpl\Logger\ColoredLogger;
 use Faerber\PdfToZpl\PdfToZplConverter;
 use Faerber\PdfToZpl\Settings\ConverterSettings;
-use Faerber\PdfToZpl\Logger\EchoLogger;
 use PHPUnit\Framework\TestCase;
 
 final class CanRotatePdfTest extends TestCase {
     public function testCanRotateLandscapePdf(): void {
-        $utils = new TestUtils(new EchoLogger);
+        $utils = new TestUtils(new ColoredLogger);
         $converter = new PdfToZplConverter(new ConverterSettings(
             verboseLogs: true,
             logger: $utils->logger,

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
+use Faerber\PdfToZpl\Logger\ColoredLogger;
 use Faerber\PdfToZpl\Settings\ConverterSettings;
-use Faerber\PdfToZpl\Logger\EchoLogger;
 use Faerber\PdfToZpl\ZplConverterFactory;
 use PHPUnit\Framework\TestCase;
 
 final class CanUseFactoryTest extends TestCase {
     public function testCanUseFactoryForImage(): void {
-        $utils = new TestUtils(new EchoLogger);
+        $utils = new TestUtils(new ColoredLogger);
         $duck = $utils->testData("duck.png");
         $converter = ZplConverterFactory::converterFromFile($duck, new ConverterSettings(verboseLogs: true, logger: $utils->logger));
         $pages = $converter->convertFromFile($duck);
@@ -30,7 +30,7 @@ final class CanUseFactoryTest extends TestCase {
 
 
     public function testCanUseFactoryForPdf(): void {
-        $utils = new TestUtils(new EchoLogger);
+        $utils = new TestUtils(new ColoredLogger);
         $pdf = $utils->testData("endicia-shipping-label.pdf");
         $converter = ZplConverterFactory::converterFromFile($pdf, new ConverterSettings(verboseLogs: true));
         $pages = $converter->convertFromFile($pdf);

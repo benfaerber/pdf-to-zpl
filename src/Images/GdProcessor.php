@@ -87,13 +87,15 @@ class GdProcessor implements ImageProcessor {
     }
 
     public function rotateImage(): static {
-        if ($this->settings->rotateDegrees) {
-            $img = imagerotate($this->img, $this->settings->rotateDegrees, 0);
-            if ($img === false) {
-                throw new PdfToZplException("Failed to rotate image!");
-            }
-            $this->img = $img;
+        if (! $this->settings->rotateDegrees) {
+            return $this;
+        } 
+        
+        $img = imagerotate($this->img, $this->settings->rotateDegrees, background_color: 0);
+        if ($img === false) {
+            throw new PdfToZplException("Failed to rotate image!");
         }
+        $this->img = $img;
         return $this;
     }
 

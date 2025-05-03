@@ -89,7 +89,7 @@ choco install ghostscript
 <?php
 use Faerber\PdfToZpl\ImageToZplConverter;
 
-$converter = new ImagetoZplConverter();
+$converter = new ImageToZplConverter();
 
 // Get an array of ZPL commands (1 per page)
 [$zpl] = $converter->convertFromFile("myFile.png");

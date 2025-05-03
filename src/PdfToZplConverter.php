@@ -13,6 +13,8 @@ use ImagickPixel;
 class PdfToZplConverter implements ZplConverterService {
     public ConverterSettings $settings;
     private ImageToZplConverter $imageConverter;
+    
+    /** The error code for PDF permission issue */  
     private const IMAGICK_SECURITY_CODE = 499;
 
     public function __construct(
@@ -102,7 +104,6 @@ class PdfToZplConverter implements ZplConverterService {
     * @return string[]
     */
     public function convertFromBlob(string $pdfData): array {
-        // TODO: why does toArray convert this to mixed? */ 
         return $this->pdfToZpls($pdfData)->toArray();
     }
 

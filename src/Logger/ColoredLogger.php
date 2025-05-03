@@ -9,11 +9,11 @@ use Stringable;
  * A simple logger that prints colored output 
 */
 class ColoredLogger extends BaseLogger {
-    private function isNoColor() {
+    private function isNoColor(): bool {
         return getenv("NO_COLOR") !== false;
     }
 
-    private function colorCode(string $name): string {
+    private function colorCode(string $name): int {
         return match ($name) {
             "red", "error" => 31,
             "green", "notice" => 32,

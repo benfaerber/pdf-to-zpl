@@ -4,7 +4,7 @@ namespace Faerber\PdfToZpl\Settings;
 
 use Faerber\PdfToZpl\Images\{ImageProcessorOption, ImageProcessor};
 use Faerber\PdfToZpl\Logger\VoidLogger;
-use Faerber\PdfToZpl\PdfToZplException;
+use Faerber\PdfToZpl\Exceptions\PdfToZplException;
 use Imagick;
 use Psr\Log\LoggerInterface;
 use Stringable;

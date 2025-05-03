@@ -2,7 +2,7 @@
 
 namespace Faerber\PdfToZpl\Images;
 
-use Faerber\PdfToZpl\PdfToZplException;
+use Faerber\PdfToZpl\Exceptions\PdfToZplException;
 use Faerber\PdfToZpl\Settings\ConverterSettings;
 use Imagick;
 use ImagickPixel;

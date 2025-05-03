@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Faerber\PdfToZpl\Settings\ConverterSettings;
-use Faerber\PdfToZpl\Settings\EchoLogger;
+use Faerber\PdfToZpl\Logger\EchoLogger;
 use Faerber\PdfToZpl\ZplConverterFactory;
 use PHPUnit\Framework\TestCase;
 

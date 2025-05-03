@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Faerber\PdfToZpl\PdfToZplConverter;
 use Faerber\PdfToZpl\Settings\ConverterSettings;
-use Faerber\PdfToZpl\Settings\EchoLogger;
+use Faerber\PdfToZpl\Logger\EchoLogger;
 use PHPUnit\Framework\TestCase;
 
 final class CanConvertPdfTest extends TestCase {

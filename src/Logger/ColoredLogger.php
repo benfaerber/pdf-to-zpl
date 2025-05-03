@@ -23,7 +23,7 @@ class ColoredLogger extends BaseLogger {
             "magenta" => 35,
             "debug" => 35,
             default => 0,
-         };
+        };
     }
 
     private function colored(string $message, string $color): string {

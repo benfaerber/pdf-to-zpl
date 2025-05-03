@@ -62,7 +62,7 @@ class ImageToZplConverter implements ZplConverterService {
             } else {
                 $encoded = preg_replace(['/0+$/', '/F+$/'], [',', '!'], $row);
                 if ($encoded === null) {
-                    throw new PdfToZplException("Failed to encode");
+                    throw new PdfToZplException("Failed to encode", context: ["y" => $y]);
                 }
                 $bitmap .= $this->compressRow($encoded);
             }

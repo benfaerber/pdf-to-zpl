@@ -7,7 +7,7 @@ use Faerber\PdfToZpl\Settings\ConverterSettings;
 
 use PhpBench\Attributes\{Revs, Iterations, Subject};
 
-#[Revs(2)]
+#[Revs(3)]
 #[Iterations(2)]
 class BenchmarkPdfConversion {
     public static function testFile(string $name): string {
@@ -27,14 +27,6 @@ class BenchmarkPdfConversion {
             imageProcessorOption: $imageProcessor,
             logger: new EchoLogger,
         ));
-    }
-
-    /**
-     * Verify phpbench is working properly
-     */
-    #[Subject]
-    public function doAdd(): void {
-        $b = 1 + 2;
     }
 
     #[Subject]

@@ -39,6 +39,9 @@
         "analyze": [
             "./vendor/bin/phpstan analyze -c ./phpstan.neon"
         ],
+        "phpstan": [
+            "./vendor/bin/phpstan analyze -c ./phpstan.neon"
+        ],
         "verify": [
             "composer check-format",
             "composer analyze",
@@ -47,12 +50,20 @@
         "run-example": [
             "php example/example.php"
         ],
-        "run-tiny-example": [
-            "php example/tinyPrinter.php"
-        ],
         "generate-test-data": [
             "php example/generateTestData.php"
         ]
+    },
+    "scripts-descriptions": {
+        "test": "Run the unit tests with phpunit",
+        "benchmark": "Benchmark the speed of the library and generate an HTML output report using phpbench",
+        "format": "Use php-cs-fixer to format the source",
+        "check-format": "Verify the source is properly formatted",
+        "analyze": "Statically analyze the source with phpstan",
+        "phpstan": "Statically analyze the source with phpstan",
+        "verify": "Go through all the processes Github actions does, so you can verify it will pass",
+        "run-example": "Run a simple example",
+        "generate-test-data": "Regenerate the comparision data used for unit testing. Be sure to visually inspect the generated data and ensure its valid!"
     },
     "require-dev": {
         "phpunit/phpunit": "^9",

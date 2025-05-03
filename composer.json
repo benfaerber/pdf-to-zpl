@@ -18,7 +18,8 @@
     ],
     "require": {
         "guzzlehttp/guzzle": "^7.9",
-        "psr/log": "^3.0"
+        "psr/log": "^3.0",
+        "jcupitt/vips": "^2.5"
     },
     "extra": {
         "examples-dir": "example"

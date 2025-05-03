@@ -17,10 +17,13 @@ enum ImageProcessorOption {
     */
     case Imagick;
 
+    case Vips;
+
     public function processor(ConverterSettings $settings): ImageProcessor {
         return match ($this) {
             self::Imagick => new ImagickProcessor(new Imagick(), $settings),
             self::Gd => new GdProcessor($settings),
+            self::Vips => new VipsProcessor($settings),
         };
     }
 }

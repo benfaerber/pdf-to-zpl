@@ -102,7 +102,6 @@ class PdfToZplConverter implements ZplConverterService {
     * @return string[]
     */
     public function convertFromBlob(string $pdfData): array {
-        // TODO: why does toArray convert this to mixed? */ 
         return $this->pdfToZpls($pdfData)->toArray();
     }
 

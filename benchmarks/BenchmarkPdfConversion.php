@@ -5,7 +5,7 @@ use Faerber\PdfToZpl\Logger\EchoLogger;
 use Faerber\PdfToZpl\PdfToZplConverter;
 use Faerber\PdfToZpl\Settings\ConverterSettings;
 
-use PhpBench\Attributes\{Revs, Iterations, Groups, Subject};
+use PhpBench\Attributes\{Revs, Iterations, Subject};
 
 #[Revs(2)]
 #[Iterations(2)]

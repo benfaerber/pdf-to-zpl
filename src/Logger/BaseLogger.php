@@ -2,7 +2,9 @@
 
 namespace Faerber\PdfToZpl\Logger;
 
-abstract class BaseLogger {
+use Psr\Log\LoggerInterface;
+
+abstract class BaseLogger implements LoggerInterface {
     /**
     * @param mixed $level
     * @param mixed[] $context

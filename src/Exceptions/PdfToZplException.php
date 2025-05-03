@@ -7,7 +7,12 @@ use Throwable;
 
 /** A custom exception to let you know this is a library related error */
 class PdfToZplException extends Exception {
-    public function __construct(string $message, int $code = 0, ?Throwable $previous = null) {
+    /** @var array<string|int|bool>|null $context */
+    public ?array $context;
+
+    /** @param array<string|int|bool>|null $context */
+    public function __construct(string $message, int $code = 0, ?Throwable $previous = null, array|null $context = null) {
+        $this->context = $context;
         parent::__construct($message, $code, $previous);
     }
 

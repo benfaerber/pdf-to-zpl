@@ -1,6 +1,6 @@
 <?php
 
-namespace Faerber\PdfToZpl;
+namespace Faerber\PdfToZpl\Exceptions;
 
 use Exception;
 use Throwable;

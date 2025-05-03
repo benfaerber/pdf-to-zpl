@@ -13,6 +13,8 @@ use ImagickPixel;
 class PdfToZplConverter implements ZplConverterService {
     public ConverterSettings $settings;
     private ImageToZplConverter $imageConverter;
+    
+    /** The error code for PDF permission issue */  
     private const IMAGICK_SECURITY_CODE = 499;
 
     public function __construct(

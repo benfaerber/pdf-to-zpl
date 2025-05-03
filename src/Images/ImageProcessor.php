@@ -2,7 +2,7 @@
 
 namespace Faerber\PdfToZpl\Images;
 
-/** An image backend able to process the convertion to ZPL */
+/** An image backend able to process the conversion to ZPL */
 interface ImageProcessor {
     /** The width of the image in pixels */
     public function width(): int;

@@ -3,6 +3,7 @@
 namespace Faerber\PdfToZpl;
 
 use Faerber\PdfToZpl\Settings\ConverterSettings;
+use Faerber\PdfToZpl\Exceptions\PdfToZplException;
 
 class ZplConverterFactory {
     /** @var class-string<ZplConverterService>[] */

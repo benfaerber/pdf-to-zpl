@@ -4,6 +4,7 @@ namespace Faerber\PdfToZpl;
 
 use GuzzleHttp\Client as GuzzleClient;
 use Faerber\PdfToZpl\Settings\LabelDirection;
+use Faerber\PdfToZpl\Exceptions\PdfToZplException;
 
 /**
  * A binary PNG image of a ZPL label fetched from `labelary.com`

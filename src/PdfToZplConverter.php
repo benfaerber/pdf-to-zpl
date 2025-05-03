@@ -67,7 +67,7 @@ class PdfToZplConverter implements ZplConverterService {
                 throw new PdfToZplException(
                     "You need to enable PDF reading and writing in your Imagick settings (see docs for more details)", 
                     code: self::IMAGICK_SECURITY_CODE, 
-                    previous: $exception
+                    previous: $exception,
                 );
             }
             // No special handling

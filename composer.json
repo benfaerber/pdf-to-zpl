@@ -63,7 +63,6 @@
         "phpstan": "Statically analyze the source with phpstan",
         "verify": "Go through all the processes Github actions does, so you can verify it will pass",
         "run-example": "Run a simple example",
-        "run-tiny-example": "Run an example of using the library with a ZD410 Desktop Printer",
         "generate-test-data": "Regenerate the comparision data used for unit testing. Be sure to visually inspect the generated data and ensure its valid!"
     },
     "require-dev": {

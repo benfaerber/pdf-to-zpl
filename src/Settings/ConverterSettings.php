@@ -4,6 +4,7 @@ namespace Faerber\PdfToZpl\Settings;
 
 use Faerber\PdfToZpl\Images\{ImageProcessorOption, ImageProcessor};
 use Faerber\PdfToZpl\Logger\EchoLogger;
+use Faerber\PdfToZpl\Logger\VoidLogger;
 use Faerber\PdfToZpl\PdfToZplException;
 use Imagick;
 use Psr\Log\LoggerInterface;
@@ -61,7 +62,7 @@ class ConverterSettings {
         $this->imageFormat = $imageFormat;
         $this->rotateDegrees = $rotateDegrees;
         $this->verboseLogs = $verboseLogs;
-        $this->logger = $logger ?: new EchoLogger();
+        $this->logger = $logger ?: new VoidLogger();
         $this->verifyDependencies($imageProcessorOption);
 
         $this->imageProcessor = $imageProcessorOption->processor($this);

@@ -5,6 +5,7 @@ namespace Faerber\PdfToZpl\Settings;
 /** 
  * A very simple `Collection` class to avoid a dependency on `illuminate/collections`
  * This prevents being locked to a specific Laravel version or any framework.
+ * I can't go back to vanilla array methods! LOL
  *
  * @template TKey of array-key
  * @template TValue

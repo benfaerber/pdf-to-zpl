@@ -7,7 +7,7 @@ use Faerber\PdfToZpl\LabelImage;
 use Faerber\PdfToZpl\PdfToZplConverter;
 use Faerber\PdfToZpl\Settings\ConverterSettings;
 use Faerber\PdfToZpl\Settings\ImageScale;
-use Faerber\PdfToZpl\Settings\EchoLogger;
+use Faerber\PdfToZpl\Logger\EchoLogger;
 use Faerber\PdfToZpl\ImageToZplConverter;
 
 // Generate Data the unit tests can compare against

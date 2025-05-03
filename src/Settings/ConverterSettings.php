@@ -3,6 +3,7 @@
 namespace Faerber\PdfToZpl\Settings;
 
 use Faerber\PdfToZpl\Images\{ImageProcessorOption, ImageProcessor};
+use Faerber\PdfToZpl\Logger\EchoLogger;
 use Faerber\PdfToZpl\PdfToZplException;
 use Imagick;
 use Psr\Log\LoggerInterface;

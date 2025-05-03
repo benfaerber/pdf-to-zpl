@@ -6,7 +6,7 @@ require __DIR__ . "/../vendor/autoload.php";
 use Faerber\PdfToZpl\PdfToZplConverter;
 use Faerber\PdfToZpl\Settings\ConverterSettings;
 use Faerber\PdfToZpl\Settings\ImageScale;
-use Faerber\PdfToZpl\Settings\EchoLogger;
+use Faerber\PdfToZpl\Logger\EchoLogger;
 
 $logger = new EchoLogger();
 $testData = __DIR__ . "/../test_data";

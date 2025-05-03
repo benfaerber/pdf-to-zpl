@@ -41,6 +41,7 @@ jobs:
 
     - name: Configure Imagick Permissions and Dependencies 
       run: |
+          sudo apt-get update
           sudo apt-get install -y ghostscript
           sudo cp -f ./.github/github-actions-imagick-config.xml /etc/ImageMagick-6/policy.xml
 

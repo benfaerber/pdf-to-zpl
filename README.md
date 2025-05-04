@@ -16,6 +16,7 @@ PDF to ZPL
 Convert a PDF into the ZPL format. Allowing for custom images, alphabets like Hebrew, Arabic and Cyrillic (without messing with fonts on the printer) and multipage shipping labels!
 
 ## Gettings Started:
+
 ```
 composer require faerber/pdf-to-zpl
 ```
@@ -39,6 +40,8 @@ foreach ($pages as $page) {
     assert(str_starts_with($page, "^XA^GFA,"));
 }
 ```
+
+You will need admin rights to setup Imagick PDF reading (essential for this library).
 
 ## Linux Environment Setup:
 
@@ -68,6 +71,8 @@ Change to:
 <policy domain="coder" rights="read | write" pattern="PDF" />
 ```
 If this line doesn't exist at all, add it. You'll only run into this with tiny linux boxes like Github Actions. 
+
+Imagick has had PDF related security issues. Convert only trusted PDFs. Here's one example: [CVE-2020-29599](https://nvd.nist.gov/vuln/detail/CVE-2020-29599)
 
 ### Windows Environment Setup:
 Install `GhostScript` with `choco` and Imagick and GD extensions.

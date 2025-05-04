@@ -1,7 +1,9 @@
-<phpunit bootstrap="tests/TestUtils.php">
-    <logging>
-        <log type="junit" target="phpunit-junit.xml"/>
-        <log type="teamcity" target="phpunit-teamcity.log"/>
-        <log type="testdox-text" target="phpunit-testdox.txt"/>
-    </logging>
+<?xml version="1.0"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="tests/TestUtils.php" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+  <coverage/>
+  <logging>
+    <junit outputFile="phpunit-junit.xml"/>
+    <teamcity outputFile="phpunit-teamcity.log"/>
+    <testdoxText outputFile="phpunit-testdox.txt"/>
+  </logging>
 </phpunit>

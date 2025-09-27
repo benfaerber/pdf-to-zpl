@@ -36,40 +36,16 @@ class ImageToZplConverter implements ZplConverterService {
         $lastRow = null;
 
         for ($y = 0; $y < $height; $y++) {
-            $bits = '';
-
-            // Create a binary string for the row
-            for ($x = 0; $x < $image->width(); $x++) {
-                $bits .= $image->isPixelBlack($x, $y) ? '1' : '0';
-            }
-
-            // Convert bits to bytes
-            $bytes = str_split($bits, length: 8);
-            $lastByte = array_pop($bytes);
-            /** @var string|null $lastByte */
-            if ($lastByte === null) {
-                throw new PdfToZplException("Failed to get last byte");
-            }
-            $bytes[] = str_pad($lastByte, length: 8, pad_string: '0');
-
-            // Convert bytes to hex and compress
-            $row = (new Collection($bytes))
-                ->map(fn ($byte) => sprintf('%02X', bindec($byte)))
-                ->implode('');
-
-            if ($row === $lastRow) {
-                $bitmap .= ":";
-            } else {
-                $encoded = preg_replace(['/0+$/', '/F+$/'], [',', '!'], $row);
-                if ($encoded === null) {
-                    throw new PdfToZplException("Failed to encode", context: ["y" => $y]);
-                }
-                $bitmap .= $this->compressRow($encoded);
-            }
+            $bytes = $this->buildBytes($image, $y);
+            $row = $this->compressBytesToHex($bytes); 
+            $bitmap .= $this->buildBitmapAddition($row, $lastRow, $y);
             $lastRow = $row;
         }
+    
+        return $this->buildFinalZplCommand($bitmap, width: $width, height: $height);
+    }
 
-        // Prepare ZPL command parameters
+    private function buildFinalZplCommand(string $bitmap, int $width, int $height): string {
         $byteCount = $width * $height;
         $parameters = new Collection([
             self::ENCODE_CMD,
@@ -82,6 +58,48 @@ class ImageToZplConverter implements ZplConverterService {
         return self::START_CMD
             . $parameters->implode(",")
             . self::END_CMD;
+    }
+
+    /**
+    * Convert bytes to hex and compess
+    */
+    private function compressBytesToHex(array $bytes): string {
+        return (new Collection($bytes))
+            ->map(fn ($byte) => sprintf('%02X', bindec($byte)))
+            ->implode('');
+    }
+
+    private function buildBytes(ImageProcessor $image, int $y): array {
+        $bits = '';
+
+        // Create a binary string for the row
+        for ($x = 0; $x < $image->width(); $x++) {
+            $bits .= $image->isPixelBlack($x, $y) ? '1' : '0';
+        }
+
+        // Convert bits to bytes
+        $bytes = str_split($bits, length: 8);
+        $lastByte = array_pop($bytes);
+        /** @var string|null $lastByte */
+        if ($lastByte === null) {
+            throw new PdfToZplException("Failed to get last byte");
+        }
+        $bytes[] = str_pad($lastByte, length: 8, pad_string: '0');
+        return $bytes;
+    }
+
+    private function buildBitmapAddition(string $row, string|null $lastRow, int $y): string {
+        if ($row === $lastRow) {
+            return ":";
+        } else {
+            $encoded = preg_replace(['/0+$/', '/F+$/'], [',', '!'], $row);
+            if ($encoded === null) {
+                throw new PdfToZplException("Failed to encode", context: ["y" => $y]);
+            }
+            return $this->compressRow($encoded);
+        }
+
+        return "";
     }
 
     /**

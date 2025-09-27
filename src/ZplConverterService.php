@@ -3,6 +3,7 @@
 namespace Faerber\PdfToZpl;
 
 use Faerber\PdfToZpl\Exceptions\PdfToZplException;
+use Faerber\PdfToZpl\Settings\ConverterSettings;
 
 /** A converter able to convert certain file types into ZPL */
 interface ZplConverterService {
@@ -25,4 +26,10 @@ interface ZplConverterService {
     * @return string[] 
     */
     public static function canConvert(): array;
+
+    /**
+    * Create a new converter service.
+    * This is preferred over the constructor as it can be verified via this interface.
+    */
+    public static function build(ConverterSettings $settings): static; 
 }

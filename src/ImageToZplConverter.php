@@ -25,6 +25,10 @@ class ImageToZplConverter implements ZplConverterService {
     public const END_CMD = "^XZ";
     private const ENCODE_CMD = "^GFA";
 
+    public static function build(ConverterSettings $settings): static {
+        return new self($settings);
+    }
+
     /**
     * @throws PdfToZplException
     */
@@ -36,9 +40,9 @@ class ImageToZplConverter implements ZplConverterService {
         $lastRow = null;
 
         for ($y = 0; $y < $height; $y++) {
-            $bytes = $this->buildBytes($image, $y);
+            $bytes = $this->buildBytesForRow($image, $y);
             $row = $this->compressBytesToHex($bytes); 
-            $bitmap .= $this->buildBitmapAddition($row, $lastRow, $y);
+            $bitmap .= $this->buildBitmapAdditionForRow($row, $lastRow, $y);
             $lastRow = $row;
         }
     
@@ -73,7 +77,7 @@ class ImageToZplConverter implements ZplConverterService {
     /**
     * @return string[]
     */
-    private function buildBytes(ImageProcessor $image, int $y): array {
+    private function buildBytesForRow(ImageProcessor $image, int $y): array {
         $bits = '';
 
         // Create a binary string for the row
@@ -92,7 +96,7 @@ class ImageToZplConverter implements ZplConverterService {
         return $bytes;
     }
 
-    private function buildBitmapAddition(string $row, string|null $lastRow, int $y): string {
+    private function buildBitmapAdditionForRow(string $row, string|null $lastRow, int $y): string {
         if ($row === $lastRow) {
             return ":";
         }

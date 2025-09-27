@@ -26,6 +26,10 @@ class PdfToZplConverter implements ZplConverterService {
         $this->imageConverter = new ImageToZplConverter($this->settings);
     }
 
+    public static function build(ConverterSettings $settings): static {
+        return new self($settings);
+    }
+    
     // Normal sized PDF: A4, Portrait (8.27 × 11.69 inch)
     // Desired sized PDF: prc 32k, Portrait (3.86 × 6.00 inch)
 

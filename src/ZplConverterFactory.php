@@ -22,7 +22,7 @@ class ZplConverterFactory {
         foreach (self::CONVERTER_SERVICES as $service) {
             if (in_array($ext, $service::canConvert())) {
                 $settings->log("Using {$service} converter");
-                return new $service($settings);
+                return $service::build($settings);
             }
         }
         throw new PdfToZplException("No converter for {$ext} files!");

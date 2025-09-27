@@ -6,6 +6,7 @@ use Faerber\PdfToZpl\Images\ImagickProcessor;
 use Faerber\PdfToZpl\Settings\ConverterSettings;
 use Faerber\PdfToZpl\Settings\Collection;
 use Faerber\PdfToZpl\Exceptions\PdfToZplException;
+use Faerber\PdfToZpl\Images\ImageProcessor;
 use Imagick;
 use ImagickException;
 use ImagickPixel;
@@ -60,6 +61,38 @@ class PdfToZplConverter implements ZplConverterService {
         $img = new Imagick();
         $dpi = $this->settings->dpi;
         $img->setResolution($dpi, $dpi);
+        $this->attemptReadBlob($img, $pdfData);
+
+        $pages = $img->getNumberImages();
+        $this->settings->log("Page count = " . $pages);
+        $processor = new ImagickProcessor($img, $this->settings);
+        $images = new Collection([]);
+        for ($i = 0; $i < $pages; $i++) {
+            $this->settings->log("Working on page " . $i);
+            $background = $this->processPage($img, $processor, $i);
+            $images->push((string)$background);
+        }
+        $img->clear();
+
+        return $images;
+    }
+
+
+    private function processPage(Imagick $img, ImageProcessor $imageProcessor, int $pageIndex): string {
+        $img->setIteratorIndex($pageIndex);
+
+        $img->setImageCompressionQuality(100);
+
+        $imageProcessor
+            ->scaleImage()
+            ->rotateImage();
+
+        $img->setImageFormat('png');
+        $background = $this->background($img);
+        return (string)$background; 
+    }
+
+    private function attemptReadBlob(Imagick $img, string $pdfData): void {
         try {
             $img->readImageBlob($pdfData);
             $this->settings->log("Read blob...");
@@ -74,28 +107,6 @@ class PdfToZplConverter implements ZplConverterService {
             // No special handling
             throw $exception;
         }
-
-        $pages = $img->getNumberImages();
-        $this->settings->log("Page count = " . $pages);
-        $processor = new ImagickProcessor($img, $this->settings);
-        $images = new Collection([]);
-        for ($i = 0; $i < $pages; $i++) {
-            $this->settings->log("Working on page " . $i);
-            $img->setIteratorIndex($i);
-
-            $img->setImageCompressionQuality(100);
-
-            $processor
-                ->scaleImage()
-                ->rotateImage();
-
-            $img->setImageFormat('png');
-            $background = $this->background($img);
-            $images->push((string)$background);
-        }
-        $img->clear();
-
-        return $images;
     }
 
     /**

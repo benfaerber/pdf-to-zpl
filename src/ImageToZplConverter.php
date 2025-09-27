@@ -61,7 +61,8 @@ class ImageToZplConverter implements ZplConverterService {
     }
 
     /**
-    * Convert bytes to hex and compess
+    * Convert bytes to hex and compress
+    * @param string[] $bytes
     */
     private function compressBytesToHex(array $bytes): string {
         return (new Collection($bytes))
@@ -69,6 +70,9 @@ class ImageToZplConverter implements ZplConverterService {
             ->implode('');
     }
 
+    /**
+    * @return string[]
+    */
     private function buildBytes(ImageProcessor $image, int $y): array {
         $bits = '';
 
@@ -91,15 +95,13 @@ class ImageToZplConverter implements ZplConverterService {
     private function buildBitmapAddition(string $row, string|null $lastRow, int $y): string {
         if ($row === $lastRow) {
             return ":";
-        } else {
-            $encoded = preg_replace(['/0+$/', '/F+$/'], [',', '!'], $row);
-            if ($encoded === null) {
-                throw new PdfToZplException("Failed to encode", context: ["y" => $y]);
-            }
-            return $this->compressRow($encoded);
         }
 
-        return "";
+        $encoded = preg_replace(['/0+$/', '/F+$/'], [',', '!'], $row);
+        if ($encoded === null) {
+            throw new PdfToZplException("Failed to encode", context: ["y" => $y]);
+        }
+        return $this->compressRow($encoded);
     }
 
     /**

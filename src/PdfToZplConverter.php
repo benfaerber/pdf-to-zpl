@@ -69,8 +69,8 @@ class PdfToZplConverter implements ZplConverterService {
         $images = new Collection([]);
         for ($i = 0; $i < $pages; $i++) {
             $this->settings->log("Working on page " . $i);
-            $background = $this->processPage($img, $processor, $i);
-            $images->push((string)$background);
+            $page = $this->processPage($img, $processor, pageIndex: $i);
+            $images->push((string)$page);
         }
         $img->clear();
 
@@ -78,7 +78,7 @@ class PdfToZplConverter implements ZplConverterService {
     }
 
 
-    private function processPage(Imagick $img, ImageProcessor $imageProcessor, int $pageIndex): string {
+    private function processPage(Imagick $img, ImageProcessor $imageProcessor, int $pageIndex): Imagick {
         $img->setIteratorIndex($pageIndex);
 
         $img->setImageCompressionQuality(100);
@@ -88,8 +88,7 @@ class PdfToZplConverter implements ZplConverterService {
             ->rotateImage();
 
         $img->setImageFormat('png');
-        $background = $this->background($img);
-        return (string)$background; 
+        return $this->background($img);
     }
 
     private function attemptReadBlob(Imagick $img, string $pdfData): void {

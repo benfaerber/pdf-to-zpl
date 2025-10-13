@@ -11,7 +11,7 @@ use Stringable;
 class ColoredLogger extends BaseLogger {
     private static bool|null $noColor = null;
     private function isNoColor(): bool {
-        return self::$noColor ??= getenv("NO_COLOR") !== false; 
+        return self::$noColor ??= getenv("NO_COLOR") !== false;
     }
 
     private function colorCode(string $name): int {

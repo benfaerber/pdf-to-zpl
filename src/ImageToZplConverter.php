@@ -25,7 +25,7 @@ class ImageToZplConverter implements ZplConverterService {
     public const END_CMD = "^XZ";
     private const ENCODE_CMD = "^GFA";
 
-    public static function build(ConverterSettings $settings): static {
+    public static function build(ConverterSettings $settings): self {
         return new self($settings);
     }
 

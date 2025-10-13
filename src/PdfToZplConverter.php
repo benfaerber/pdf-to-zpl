@@ -26,7 +26,7 @@ class PdfToZplConverter implements ZplConverterService {
         $this->imageConverter = new ImageToZplConverter($this->settings);
     }
 
-    public static function build(ConverterSettings $settings): static {
+    public static function build(ConverterSettings $settings): self {
         return new self($settings);
     }
     

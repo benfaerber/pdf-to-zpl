@@ -31,5 +31,5 @@ interface ZplConverterService {
     * Create a new converter service.
     * This is preferred over the constructor as it can be verified via this interface.
     */
-    public static function build(ConverterSettings $settings): static;
+    public static function build(ConverterSettings $settings): self;
 }

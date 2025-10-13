@@ -13,7 +13,7 @@ use Faerber\PdfToZpl\Exceptions\PdfToZplException;
  * Only 5 requests are allowed per second!
  */
 class LabelImage {
-    public const URL = "http://api.labelary.com/v1/printers/8dpmm/labels";
+    public const URL = "https://api.labelary.com/v1/printers/8dpmm/labels";
     public string $image;
 
     private static GuzzleClient $httpClient;

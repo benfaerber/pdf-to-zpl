@@ -27,16 +27,16 @@ class ConverterSettings {
     public readonly int $labelHeight;
 
     /** The format to encode the image with */
-    public string $imageFormat;
+    public readonly string $imageFormat;
 
     /** How many degrees to rotate the label. Used for landscape PDFs */
-    public int|null $rotateDegrees;
+    public readonly int|null $rotateDegrees;
 
     /** The Image Processing backend to use (example: imagick or GD) */
-    public ImageProcessor $imageProcessor;
+    public readonly ImageProcessor $imageProcessor;
 
     /** Log each step of the process */
-    public bool $verboseLogs;
+    public readonly bool $verboseLogs;
     
     /** The logger to use for `verboseLogs`
     * If using Laravel pass: `logger()` 

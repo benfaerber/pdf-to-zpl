@@ -54,8 +54,18 @@ jobs:
     - name: Verify phpstan 
       run: composer analyze 
 
-    - name: Run phpunit tests 
+    - name: Run phpunit tests
       run: composer test
+
+    - name: Upload coverage to Codecov
+      if: matrix.php-version == '8.3'
+      uses: codecov/codecov-action@v4
+      with:
+        files: ./coverage.xml
+        fail_ci_if_error: false
+        verbose: true
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
     - name: Show PHPUnit logs on failure
       if: failure()

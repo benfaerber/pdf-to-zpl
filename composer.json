@@ -18,7 +18,8 @@
     ],
     "require": {
         "guzzlehttp/guzzle": "^7.9",
-        "psr/log": "^3.0"
+        "psr/log": "^3.0",
+        "monolog/monolog": "^3.9"
     },
     "extra": {
         "examples-dir": "example"

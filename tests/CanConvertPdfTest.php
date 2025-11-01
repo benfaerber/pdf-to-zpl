@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-use Faerber\PdfToZpl\Logger\ColoredLogger;
+use Faerber\PdfToZpl\Logger\LoggerFactory;
 use Faerber\PdfToZpl\PdfToZplConverter;
 use Faerber\PdfToZpl\Settings\ConverterSettings;
 use PHPUnit\Framework\TestCase;
 
 final class CanConvertPdfTest extends TestCase {
     public function testCanConvertEndiciaPdf(): void {
-        $utils = new TestUtils(new ColoredLogger);
+        $utils = new TestUtils(LoggerFactory::createColoredLogger());
         $converter = new PdfToZplConverter(new ConverterSettings(verboseLogs: true, logger: $utils->logger));
         $pages = $converter->convertFromFile($utils->testData("endicia-shipping-label.pdf"));
         $expectedPageCount = 3;
@@ -29,7 +29,7 @@ final class CanConvertPdfTest extends TestCase {
     }
 
     public function testCanConvertDonkeyPdf(): void {
-        $utils = new TestUtils(new ColoredLogger);
+        $utils = new TestUtils(LoggerFactory::createColoredLogger());
         $converter = new PdfToZplConverter(new ConverterSettings(verboseLogs: true));
         $pages = $converter->convertFromFile($utils->testData("donkey.pdf"));
         $expectedPageCount = 9;

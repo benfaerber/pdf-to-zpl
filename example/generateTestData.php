@@ -7,8 +7,9 @@ use Faerber\PdfToZpl\LabelImage;
 use Faerber\PdfToZpl\PdfToZplConverter;
 use Faerber\PdfToZpl\Settings\ConverterSettings;
 use Faerber\PdfToZpl\Settings\ImageScale;
-use Faerber\PdfToZpl\Logger\EchoLogger;
+use Faerber\PdfToZpl\Logger\LoggerFactory;
 use Faerber\PdfToZpl\ImageToZplConverter;
+use Psr\Log\LoggerInterface;
 
 // Generate Data the unit tests can compare against
 // After you've generated the data, view the images in the test_output folder
@@ -26,10 +27,11 @@ class GenerateTestData {
     private PdfToZplConverter $landscapePdfConverter;
 
     public function __construct(
-        private EchoLogger $logger = new EchoLogger(),
+        private ?LoggerInterface $logger = null,
         private string $testData = __DIR__ . "/../test_data",
         private string $testOutput = __DIR__ . "/../test_output",
     ) {
+        $this->logger = $logger ?: LoggerFactory::createEchoLogger();
         $this->settings = new ConverterSettings(
             scale: ImageScale::Cover,
             logger: $this->logger,

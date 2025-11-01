@@ -1,7 +1,7 @@
 <?php
 
 use Faerber\PdfToZpl\ImageToZplConverter;
-use Faerber\PdfToZpl\Logger\EchoLogger;
+use Faerber\PdfToZpl\Logger\LoggerFactory;
 use Faerber\PdfToZpl\Settings\ConverterSettings;
 
 use PhpBench\Attributes\Iterations;
@@ -17,7 +17,7 @@ class BenchmarkPdfConversion {
 
     public static function settings(): ConverterSettings {
         return new ConverterSettings(
-            logger: new EchoLogger(),
+            logger: LoggerFactory::createEchoLogger(),
             verboseLogs: true,
         );
     } 

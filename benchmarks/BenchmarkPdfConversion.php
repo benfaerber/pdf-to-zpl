@@ -1,7 +1,7 @@
 <?php
 
 use Faerber\PdfToZpl\Images\ImageProcessorOption;
-use Faerber\PdfToZpl\Logger\EchoLogger;
+use Faerber\PdfToZpl\Logger\LoggerFactory;
 use Faerber\PdfToZpl\PdfToZplConverter;
 use Faerber\PdfToZpl\Settings\ConverterSettings;
 
@@ -25,7 +25,7 @@ class BenchmarkPdfConversion {
     private function convertFileWithProcessor(string $name, ImageProcessorOption $imageProcessor): void {
         $this->convertFile($name, new ConverterSettings(
             imageProcessorOption: $imageProcessor,
-            logger: new EchoLogger,
+            logger: LoggerFactory::createEchoLogger(),
         ));
     }
 

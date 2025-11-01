@@ -18,7 +18,9 @@
     ],
     "require": {
         "guzzlehttp/guzzle": "^7.9",
-        "psr/log": "^3.0"
+        "psr/log": "^3.0",
+        "monolog/monolog": "^3.9",
+        "illuminate/collections": "^12.36"
     },
     "extra": {
         "examples-dir": "example"
@@ -26,6 +28,12 @@
     "scripts": {
         "test": [
             "./vendor/bin/phpunit tests --verbose --bootstrap \"tests/TestUtils.php\""
+        ],
+        "test:coverage": [
+            "XDEBUG_MODE=coverage ./vendor/bin/phpunit tests --verbose --bootstrap \"tests/TestUtils.php\" --coverage-html coverage"
+        ],
+        "view:coverage": [
+            "open coverage/index.html"
         ],
         "benchmark": [
             "php vendor/bin/phpbench run --report=main_report --output=html_report"
@@ -56,6 +64,7 @@
     },
     "scripts-descriptions": {
         "test": "Run the unit tests with phpunit",
+        "test:coverage": "Run the unit tests with code coverage and generate an HTML report in the coverage directory",
         "benchmark": "Benchmark the speed of the library and generate an HTML output report using phpbench",
         "format": "Use php-cs-fixer to format the source",
         "check-format": "Verify the source is properly formatted",

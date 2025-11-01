@@ -4,7 +4,7 @@ namespace Faerber\PdfToZpl;
 
 use Faerber\PdfToZpl\Images\ImagickProcessor;
 use Faerber\PdfToZpl\Settings\ConverterSettings;
-use Faerber\PdfToZpl\Settings\Collection;
+use Illuminate\Support\Collection;
 use Faerber\PdfToZpl\Exceptions\PdfToZplException;
 use Faerber\PdfToZpl\Images\ImageProcessor;
 use Imagick;

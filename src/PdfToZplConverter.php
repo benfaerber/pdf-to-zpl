@@ -116,9 +116,10 @@ class PdfToZplConverter implements ZplConverterService {
     * Convert raw PDF data into an array of ZPL commands.
     * Each page of the PDF is 1 ZPL command.
     *
-    * @return string[]
+    * @return array<string>
     */
     public function convertFromBlob(string $pdfData): array {
+        /** @var array<string> */
         return $this->pdfToZpls($pdfData)->toArray();
     }
 

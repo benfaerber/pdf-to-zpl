@@ -25,9 +25,10 @@ class GenerateTestData {
     private PdfToZplConverter $pdfConverter;
     private ImageToZplConverter $imageConverter;
     private PdfToZplConverter $landscapePdfConverter;
+    private LoggerInterface $logger;
 
     public function __construct(
-        private ?LoggerInterface $logger = null,
+        ?LoggerInterface $logger = null,
         private string $testData = __DIR__ . "/../test_data",
         private string $testOutput = __DIR__ . "/../test_output",
     ) {

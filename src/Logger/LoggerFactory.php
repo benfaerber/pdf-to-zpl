@@ -35,9 +35,11 @@ class LoggerFactory {
             }
 
             public function format(LogRecord $record): string {
-                $levelName = $record['level_name'];
-                $channel = $record['channel'];
-                $message = $record['message'];
+                $levelNameRaw = $record['level_name'];
+                $levelName = is_string($levelNameRaw) ? $levelNameRaw : 'UNKNOWN';
+                $channel = $record['channel'] && is_string($record['channel']) ? $record['channel'] : 'DEBUG';
+                $messageRaw = $record['message'];
+                $message = is_string($messageRaw) ? $messageRaw : json_encode($messageRaw);
                 $context = $record['context'] ?? [];
 
                 if ($this->noColor) {
@@ -79,9 +81,11 @@ class LoggerFactory {
             }
 
             public function format(LogRecord $record): string {
-                $levelName = $record['level_name'];
-                $channel = $record['channel'];
-                $message = $record['message'];
+                $levelNameRaw = $record['level_name'];
+                $levelName = is_string($levelNameRaw) ? $levelNameRaw : 'UNKNOWN';
+                $channel = $record['channel'] && is_string($record['channel']) ? $record['channel'] : 'DEBUG';
+                $messageRaw = $record['message'];
+                $message = is_string($messageRaw) ? $messageRaw : json_encode($messageRaw);
                 $context = $record['context'] ?? [];
 
                 $contextStr = !empty($context) ? ' (Context: ' . json_encode($context) . ')' : '';

@@ -14,22 +14,26 @@ final class LabelDirectionTest extends TestCase {
 
     public function testLabelDirectionHasUpCase(): void {
         $this->assertTrue(enum_exists(LabelDirection::class));
-        $this->assertNotNull(LabelDirection::Up);
+        // Enum cases are guaranteed to exist at compile time
+        $this->assertEquals('Up', LabelDirection::Up->name);
     }
 
     public function testLabelDirectionHasDownCase(): void {
         $this->assertTrue(enum_exists(LabelDirection::class));
-        $this->assertNotNull(LabelDirection::Down);
+        // Enum cases are guaranteed to exist at compile time
+        $this->assertEquals('Down', LabelDirection::Down->name);
     }
 
     public function testLabelDirectionHasLeftCase(): void {
         $this->assertTrue(enum_exists(LabelDirection::class));
-        $this->assertNotNull(LabelDirection::Left);
+        // Enum cases are guaranteed to exist at compile time
+        $this->assertEquals('Left', LabelDirection::Left->name);
     }
 
     public function testLabelDirectionHasRightCase(): void {
         $this->assertTrue(enum_exists(LabelDirection::class));
-        $this->assertNotNull(LabelDirection::Right);
+        // Enum cases are guaranteed to exist at compile time
+        $this->assertEquals('Right', LabelDirection::Right->name);
     }
 
     public function testUpReturnsZeroDegrees(): void {
@@ -80,21 +84,32 @@ final class LabelDirectionTest extends TestCase {
     }
 
     public function testToDegreesReturnsIntegers(): void {
-        $this->assertIsInt(LabelDirection::Up->toDegree());
-        $this->assertIsInt(LabelDirection::Down->toDegree());
-        $this->assertIsInt(LabelDirection::Left->toDegree());
-        $this->assertIsInt(LabelDirection::Right->toDegree());
+        // toDegree() return type is already int, verify values are valid
+        $this->assertEquals(0, LabelDirection::Up->toDegree());
+        $this->assertEquals(180, LabelDirection::Down->toDegree());
+        $this->assertEquals(90, LabelDirection::Left->toDegree());
+        $this->assertEquals(270, LabelDirection::Right->toDegree());
     }
 
     public function testEnumCanBeUsedInMatch(): void {
-        $result = match (LabelDirection::Up) {
-            LabelDirection::Up => 'up',
-            LabelDirection::Down => 'down',
-            LabelDirection::Left => 'left',
-            LabelDirection::Right => 'right',
-        };
+        $directions = [
+            LabelDirection::Up,
+            LabelDirection::Down,
+            LabelDirection::Left,
+            LabelDirection::Right,
+        ];
 
-        $this->assertEquals('up', $result);
+        foreach ($directions as $direction) {
+            $result = match ($direction) {
+                LabelDirection::Up => 'up',
+                LabelDirection::Down => 'down',
+                LabelDirection::Left => 'left',
+                LabelDirection::Right => 'right',
+            };
+
+            // Match expression guarantees string result
+            $this->assertContains($result, ['up', 'down', 'left', 'right']);
+        }
     }
 
     public function testAllDirectionsCanBeMatchedToDegrees(): void {
@@ -107,7 +122,7 @@ final class LabelDirectionTest extends TestCase {
 
         foreach ($directions as $direction) {
             $degree = $direction->toDegree();
-            $this->assertIsInt($degree);
+            // toDegree() return type is already int, just validate range
             $this->assertGreaterThanOrEqual(0, $degree);
             $this->assertLessThan(360, $degree);
         }

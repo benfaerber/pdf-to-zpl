@@ -132,6 +132,10 @@ final class LabelImageTest extends TestCase {
     }
 
     public function testCustomDirection(): void {
+        if ($this->shouldSkipTest()) {
+            $this->markTestSkipped('Skipping API test - only runs on PHP 8.4 to avoid rate limiting');
+        }
+
         // Sleep to avoid rate limiting
         usleep(250000); // 250ms
 

@@ -4,3 +4,4 @@ phpunit-junit.xml
 phpunit-teamcity.log
 phpunit-testdox.txt
 .phpunit.result.cache
+coverage/

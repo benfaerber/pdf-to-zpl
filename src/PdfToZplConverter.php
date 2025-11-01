@@ -4,7 +4,7 @@ namespace Faerber\PdfToZpl;
 
 use Faerber\PdfToZpl\Images\ImagickProcessor;
 use Faerber\PdfToZpl\Settings\ConverterSettings;
-use Faerber\PdfToZpl\Settings\Collection;
+use Illuminate\Support\Collection;
 use Faerber\PdfToZpl\Exceptions\PdfToZplException;
 use Faerber\PdfToZpl\Images\ImageProcessor;
 use Imagick;
@@ -116,9 +116,10 @@ class PdfToZplConverter implements ZplConverterService {
     * Convert raw PDF data into an array of ZPL commands.
     * Each page of the PDF is 1 ZPL command.
     *
-    * @return string[]
+    * @return array<string>
     */
     public function convertFromBlob(string $pdfData): array {
+        /** @var array<string> */
         return $this->pdfToZpls($pdfData)->toArray();
     }
 

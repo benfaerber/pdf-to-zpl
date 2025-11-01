@@ -3,13 +3,13 @@
 declare(strict_types=1);
 
 use Faerber\PdfToZpl\ImageToZplConverter;
-use Faerber\PdfToZpl\Logger\ColoredLogger;
+use Faerber\PdfToZpl\Logger\LoggerFactory;
 use Faerber\PdfToZpl\Settings\ConverterSettings;
 use PHPUnit\Framework\TestCase;
 
 final class CanConvertImageTest extends TestCase {
     public function testCanConvertDuck(): void {
-        $utils = new TestUtils(new ColoredLogger);
+        $utils = new TestUtils(LoggerFactory::createColoredLogger());
         $converter = new ImageToZplConverter(new ConverterSettings(verboseLogs: true, logger: $utils->logger));
         $pages = $converter->convertFromFile($utils->testData("duck.png"));
         $expectedPageCount = 1;

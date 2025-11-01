@@ -35,6 +35,10 @@
         "view:coverage": [
             "open coverage/index.html"
         ],
+        "test:coverage-view": [
+            "XDEBUG_MODE=coverage ./vendor/bin/phpunit tests --verbose --bootstrap \"tests/TestUtils.php\" --coverage-html coverage",
+            "open coverage/index.html"
+        ],
         "benchmark": [
             "php vendor/bin/phpbench run --report=main_report --output=html_report"
         ],

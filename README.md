@@ -7,6 +7,7 @@ PDF to ZPL
 
 <p>
 <a href="phpstan.neon"><img src="https://img.shields.io/badge/PHPStan-level%2010-brightgreen?logo=php" /></a>
+<a href="https://codecov.io/gh/benfaerber/pdf-to-zpl"><img src="https://codecov.io/gh/benfaerber/pdf-to-zpl/branch/master/graph/badge.svg" /></a>
 <a href="LICENSE"><img src="https://img.shields.io/github/license/benfaerber/pdf-to-zpl?color=yellowgreen" /></a>
 </p>
 

@@ -22,4 +22,4 @@ $testOutput = __DIR__ . "/../test_output";
 
 [$zpl] = $converter->convertFromFile($testData . "/duck.png");
 
-file_put_contents($testOutput . "/tiny-duck.zpl.txt", '$tinyDuck = "' . $zpl . '"');
+file_put_contents($testOutput . "/tiny-duck.zpl", '$tinyDuck = "' . $zpl . '"');

@@ -34,7 +34,7 @@ class TestUtils {
     /** @return string[] */
     public function loadExpectedPages(string $name, int $pageCount): array {
         return array_map(
-            fn ($index) => self::fileGetContents($this->testOutput("{$name}_{$index}.zpl.txt")),
+            fn ($index) => self::fileGetContents($this->testOutput("{$name}_{$index}.zpl")),
             range(0, $pageCount - 1)
         );
     }

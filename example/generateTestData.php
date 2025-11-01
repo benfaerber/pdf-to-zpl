@@ -51,7 +51,7 @@ class GenerateTestData {
             assert(str_starts_with($page, "^XA^GFA,"));
 
             $basePath = $this->testOutput . "/{$name}_{$index}";
-            $zplFilepath = $basePath . ".zpl.txt";
+            $zplFilepath = $basePath . ".zpl";
             if (file_exists($zplFilepath)) {
                 continue;
             }

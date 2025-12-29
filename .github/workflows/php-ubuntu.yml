@@ -55,7 +55,7 @@ jobs:
       run: composer analyze 
 
     - name: Run phpunit tests
-      run: composer test
+      run: ./vendor/bin/phpunit tests --verbose --bootstrap "tests/TestUtils.php" --exclude-group api
 
     - name: Upload coverage to Codecov
       if: matrix.php-version == '8.3'

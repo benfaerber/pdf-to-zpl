@@ -6,6 +6,9 @@ use Faerber\PdfToZpl\LabelImage;
 use Faerber\PdfToZpl\Settings\LabelDirection;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @group api
+ */
 final class LabelImageTest extends TestCase {
     private string $simpleZpl = "^XA^FO50,50^ADN,36,20^FDTest Label^FS^XZ";
     private static ?LabelImage $cachedLabel = null;
@@ -24,10 +27,6 @@ final class LabelImageTest extends TestCase {
     }
 
     public function testCanCreateLabelImageAndHitsApi(): void {
-        if ($this->shouldSkipTest()) {
-            $this->markTestSkipped('Skipping API test - only runs on PHP 8.4 to avoid rate limiting');
-        }
-
         $label = $this->getCachedLabel();
 
         // Should have image data from API
@@ -36,10 +35,6 @@ final class LabelImageTest extends TestCase {
     }
 
     public function testDownloadsValidPngImage(): void {
-        if ($this->shouldSkipTest()) {
-            $this->markTestSkipped('Skipping API test - only runs on PHP 8.4 to avoid rate limiting');
-        }
-
         $label = $this->getCachedLabel();
         $image = $label->asRaw();
 
@@ -53,10 +48,6 @@ final class LabelImageTest extends TestCase {
     }
 
     public function testAsHtmlImageReturnsDataUri(): void {
-        if ($this->shouldSkipTest()) {
-            $this->markTestSkipped('Skipping API test - only runs on PHP 8.4 to avoid rate limiting');
-        }
-
         $label = $this->getCachedLabel();
         $html = $label->asHtmlImage();
 
@@ -70,10 +61,6 @@ final class LabelImageTest extends TestCase {
     }
 
     public function testAsRawReturnsImageData(): void {
-        if ($this->shouldSkipTest()) {
-            $this->markTestSkipped('Skipping API test - only runs on PHP 8.4 to avoid rate limiting');
-        }
-
         $label = $this->getCachedLabel();
         $raw = $label->asRaw();
 
@@ -82,10 +69,6 @@ final class LabelImageTest extends TestCase {
     }
 
     public function testCanSaveImageToFile(): void {
-        if ($this->shouldSkipTest()) {
-            $this->markTestSkipped('Skipping API test - only runs on PHP 8.4 to avoid rate limiting');
-        }
-
         $label = $this->getCachedLabel();
         $tempFile = sys_get_temp_dir() . '/test_label_' . uniqid() . '.png';
 
@@ -111,10 +94,6 @@ final class LabelImageTest extends TestCase {
     }
 
     public function testCustomDimensions(): void {
-        if ($this->shouldSkipTest()) {
-            $this->markTestSkipped('Skipping API test - only runs on PHP 8.4 to avoid rate limiting');
-        }
-
         // Sleep to avoid rate limiting
         usleep(250000); // 250ms
 
@@ -132,10 +111,6 @@ final class LabelImageTest extends TestCase {
     }
 
     public function testCustomDirection(): void {
-        if ($this->shouldSkipTest()) {
-            $this->markTestSkipped('Skipping API test - only runs on PHP 8.4 to avoid rate limiting');
-        }
-
         // Sleep to avoid rate limiting
         usleep(250000); // 250ms
 
@@ -149,12 +124,5 @@ final class LabelImageTest extends TestCase {
         // Image should be a valid PNG
         $pngSignature = "\x89PNG\r\n\x1a\n";
         $this->assertEquals($pngSignature, substr($label->image, 0, 8));
-    }
-
-    /**
-     * To avoid getting rate limited, only run this test on 1 version (I run 4 versions in Github actions)
-     */
-    private function shouldSkipTest(): bool {
-        return version_compare(PHP_VERSION, '8.4', '<') || version_compare(PHP_VERSION, '8.5', '>=');
     }
 }

@@ -81,7 +81,7 @@ class ConverterSettings {
         }
 
         $formats = Imagick::queryFormats();
-        if (! array_search("PDF", $formats)) {
+        if (array_search("PDF", $formats) === false) {
             throw new PdfToZplException("Format PDF not allowed for Imagick (try installing ghostscript: sudo apt-get install -y ghostscript)");
         }
     }

@@ -50,17 +50,15 @@ class ImagickProcessor implements ImageProcessor {
 
     /** Perform any necessary scaling on the image */
     public function scaleImage(): static {
-        if ($this->width() === $this->settings->labelWidth) {
+        if (!$this->settings->scale->shouldResize() || $this->width() === $this->settings->labelWidth) {
             return $this;
         }
 
-        if ($this->settings->scale->shouldResize()) {
-            $this->img->scaleImage(
-                $this->settings->labelWidth,
-                $this->settings->labelHeight,
-                bestfit: $this->settings->scale->isBestFit()
-            );
-        }
+        $this->img->scaleImage(
+            $this->settings->labelWidth,
+            $this->settings->labelHeight,
+            bestfit: $this->settings->scale->isBestFit()
+        );
         return $this;
     }
 

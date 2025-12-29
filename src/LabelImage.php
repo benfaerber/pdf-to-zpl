@@ -26,7 +26,7 @@ class LabelImage {
         public float $height = 6,
     ) {
         self::$httpClient ??= new GuzzleClient();
-        $this->image = $this->download();
+        $this->download();
     }
 
     /** Download and return a raw PNG as a string */
@@ -52,7 +52,8 @@ class LabelImage {
             throw new PdfToZplException("Failed to Download Image!");
         }
 
-        return (string)$response->getBody();
+        $this->image = (string)$response->getBody();
+        return $this->image;
     }
 
     /**

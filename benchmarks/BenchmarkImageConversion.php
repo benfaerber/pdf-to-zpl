@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Faerber\PdfToZpl\ImageToZplConverter;
 use Faerber\PdfToZpl\Logger\LoggerFactory;
 use Faerber\PdfToZpl\Settings\ConverterSettings;

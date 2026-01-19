@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Faerber\PdfToZpl;
 
 use GuzzleHttp\Client as GuzzleClient;

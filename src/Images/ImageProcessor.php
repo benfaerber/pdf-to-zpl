@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Faerber\PdfToZpl\Images;
 
 /** An image backend able to process the conversion to ZPL */

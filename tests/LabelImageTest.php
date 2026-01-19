@@ -5,37 +5,51 @@ declare(strict_types=1);
 use Faerber\PdfToZpl\LabelImage;
 use Faerber\PdfToZpl\Settings\LabelDirection;
 use PHPUnit\Framework\TestCase;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Client;
 
 /**
  * @group api
  */
 final class LabelImageTest extends TestCase {
     private string $simpleZpl = "^XA^FO50,50^ADN,36,20^FDTest Label^FS^XZ";
-    private static ?LabelImage $cachedLabel = null;
+    private string $fakePng;
 
-    /**
-     * Get a cached LabelImage to avoid hitting API rate limits
-     * The Labelary API only allows 5 requests per second
-     */
-    private function getCachedLabel(): LabelImage {
-        if (self::$cachedLabel === null) {
-            self::$cachedLabel = new LabelImage($this->simpleZpl);
-            // Small delay to avoid rate limiting
-            usleep(250000); // 250ms
-        }
-        return self::$cachedLabel;
+    protected function setUp(): void {
+        parent::setUp();
+        // A valid 1x1 PNG image
+        $this->fakePng = base64_decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=');
+    }
+
+    private function getMockLabel(string|null $zpl = null, LabelDirection $direction = LabelDirection::Up, float $width = 4, float $height = 6): LabelImage {
+        $mock = new MockHandler([
+            new Response(200, [], $this->fakePng),
+        ]);
+
+        $handlerStack = HandlerStack::create($mock);
+        $client = new Client(['handler' => $handlerStack]);
+
+        return new LabelImage(
+            zpl: $zpl ?? $this->simpleZpl,
+            direction: $direction,
+            width: $width,
+            height: $height,
+            client: $client
+        );
     }
 
     public function testCanCreateLabelImageAndHitsApi(): void {
-        $label = $this->getCachedLabel();
+        $label = $this->getMockLabel();
 
         // Should have image data from API
         $this->assertNotEmpty($label->image);
-        $this->assertGreaterThan(100, strlen($label->image), "Image should have substantial data");
+        $this->assertEquals($this->fakePng, $label->image);
     }
 
     public function testDownloadsValidPngImage(): void {
-        $label = $this->getCachedLabel();
+        $label = $this->getMockLabel();
         $image = $label->asRaw();
 
         // Check PNG magic bytes (first 8 bytes should be PNG signature)
@@ -48,7 +62,7 @@ final class LabelImageTest extends TestCase {
     }
 
     public function testAsHtmlImageReturnsDataUri(): void {
-        $label = $this->getCachedLabel();
+        $label = $this->getMockLabel();
         $html = $label->asHtmlImage();
 
         // Should start with data URI prefix
@@ -61,7 +75,7 @@ final class LabelImageTest extends TestCase {
     }
 
     public function testAsRawReturnsImageData(): void {
-        $label = $this->getCachedLabel();
+        $label = $this->getMockLabel();
         $raw = $label->asRaw();
 
         $this->assertNotEmpty($raw);
@@ -69,7 +83,7 @@ final class LabelImageTest extends TestCase {
     }
 
     public function testCanSaveImageToFile(): void {
-        $label = $this->getCachedLabel();
+        $label = $this->getMockLabel();
         $tempFile = sys_get_temp_dir() . '/test_label_' . uniqid() . '.png';
 
         try {
@@ -94,14 +108,7 @@ final class LabelImageTest extends TestCase {
     }
 
     public function testCustomDimensions(): void {
-        // Sleep to avoid rate limiting
-        usleep(250000); // 250ms
-
-        $label = new LabelImage(
-            zpl: $this->simpleZpl,
-            width: 2,
-            height: 3
-        );
+        $label = $this->getMockLabel(width: 2, height: 3);
 
         $this->assertNotEmpty($label->image);
 
@@ -111,13 +118,7 @@ final class LabelImageTest extends TestCase {
     }
 
     public function testCustomDirection(): void {
-        // Sleep to avoid rate limiting
-        usleep(250000); // 250ms
-
-        $label = new LabelImage(
-            zpl: $this->simpleZpl,
-            direction: LabelDirection::Right
-        );
+        $label = $this->getMockLabel(direction: LabelDirection::Right);
 
         $this->assertNotEmpty($label->image);
 

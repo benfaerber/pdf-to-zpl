@@ -18,7 +18,8 @@ class LabelImage {
     public const URL = "https://api.labelary.com/v1/printers/8dpmm/labels";
     public string $image;
 
-    private static GuzzleClient $httpClient;
+    private GuzzleClient $client;
+    private static GuzzleClient|null $globalClient = null;
     private static ImageToZplConverter|null $imageConverter = null;
 
     public function __construct(
@@ -26,8 +27,15 @@ class LabelImage {
         public LabelDirection $direction = LabelDirection::Up,
         public float $width = 4,
         public float $height = 6,
+        GuzzleClient|null $client = null,
     ) {
-        self::$httpClient ??= new GuzzleClient();
+        if ($client !== null) {
+            $this->client = $client;
+        } else {
+            self::$globalClient ??= new GuzzleClient();
+            $this->client = self::$globalClient;
+        }
+
         $this->download();
     }
 
@@ -40,7 +48,7 @@ class LabelImage {
 
         $url = self::URL . "/{$this->width}x{$this->height}/0/";
         
-        $response = self::$httpClient->post($url, [
+        $response = $this->client->post($url, [
             'headers' => $headers,
             'multipart' => [
                 [

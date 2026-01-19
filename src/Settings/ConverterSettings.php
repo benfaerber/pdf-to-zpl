@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Faerber\PdfToZpl\Settings;
 
 use Faerber\PdfToZpl\Images\{ImageProcessorOption, ImageProcessor};

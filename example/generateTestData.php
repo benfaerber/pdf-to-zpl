@@ -64,9 +64,6 @@ class GenerateTestData {
 
             $image = new LabelImage(zpl: $page);
             $image->saveAs($basePath . ".png");
-
-            // So we don't get rate limited
-            sleep(1);
         }
     }
 

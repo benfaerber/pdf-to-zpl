@@ -11,8 +11,6 @@ use Faerber\PdfToZpl\Exceptions\PdfToZplException;
 /**
  * A binary PNG image of a ZPL label fetched from `labelary.com`
  * This is a great way to debug or give users a preview before printing
- *
- * Only 5 requests are allowed per second!
  */
 class LabelImage {
     public const URL = "https://api.labelary.com/v1/printers/8dpmm/labels";

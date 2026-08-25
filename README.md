@@ -11,7 +11,7 @@ PDF to ZPL
 </p>
 
 > [!TIP]
-> **Need this as a hosted API?** This library grew into [Stripy Horse](https://stripyhorse.io) — a developer platform for Zebra printing: PDF, image & HTML → ZPL conversion, ZPL rendering and previews, virtual printers to test against, and typed SDKs. There's also a [free PDF → ZPL converter](https://stripyhorse.io/tools/pdf-to-zpl) you can try in the browser.
+> **This library grew into [Stripy Horse](https://stripyhorse.io)** — a hosted Zebra-printing platform from the same maintainer. Convert PDFs, images and HTML to ZPL with an engine cross-validated on thousands of physically printed carrier labels. Preview ZPL pixel-true. And test your whole pipeline against virtual Zebra printers that behave like the real firmware — status queries, fault injection, hold queues — so label bugs fail your CI build instead of your shipping dock. Try the [free in-browser PDF → ZPL converter](https://stripyhorse.io/tools/pdf-to-zpl) — no signup needed.
 
 
 <img src="./static/donkey-label.jpg" alt="A label created with pdf-to-zpl" />

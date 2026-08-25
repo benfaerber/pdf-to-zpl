@@ -10,6 +10,9 @@ PDF to ZPL
 <a href="LICENSE"><img src="https://img.shields.io/github/license/benfaerber/pdf-to-zpl?color=yellowgreen" /></a>
 </p>
 
+> [!TIP]
+> **Need this as a hosted API?** This library grew into [Stripy Horse](https://stripyhorse.io) — a developer platform for Zebra printing: PDF, image & HTML → ZPL conversion, ZPL rendering and previews, virtual printers to test against, and typed SDKs. There's also a [free PDF → ZPL converter](https://stripyhorse.io/tools/pdf-to-zpl) you can try in the browser.
+
 
 <img src="./static/donkey-label.jpg" alt="A label created with pdf-to-zpl" />
 

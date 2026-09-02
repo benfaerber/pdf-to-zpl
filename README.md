@@ -15,6 +15,8 @@ PDF to ZPL
 
 Convert a PDF into the ZPL format. Allowing for custom images, alphabets like Hebrew, Arabic and Cyrillic (without messing with fonts on the printer) and multipage shipping labels!
 
+> **Hosted version:** [Stripy Horse](https://stripyhorse.io) is this library grown into a service, by the same author. A free in-browser [PDF to ZPL converter](https://stripyhorse.io/tools/pdf-to-zpl) with no Imagick to install, an [API with official SDKs](https://stripyhorse.io/docs) for PHP, Python, C#, Java and Go, pixel-true label previews, and [virtual Zebra printers](https://stripyhorse.io/simulator) you can point your app at for testing. Start with the guide [How to convert PDF to ZPL](https://stripyhorse.io/guides/how-to-convert-pdf-to-zpl).
+
 ## Gettings Started:
 
 ```
@@ -97,6 +99,8 @@ assert(str_starts_with($zpl, "^XA^GFA,"));
 ## Previewing Labels
 The [`labelary`](https://labelary.com/) API is used to generate images from ZPL allowing the label to be previewed.
 This is a free API that requires no auth so it can be used with no setup. Be sure to respect their rate limits!
+
+For previews without a third-party rate limit, [Stripy Horse's ZPL viewer](https://stripyhorse.io/tools/zpl-viewer) renders the same ZPL in the browser, and its [render API](https://stripyhorse.io/docs) returns PNGs for every label in a stream.
 
 ```php
 <?php

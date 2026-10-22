@@ -20,7 +20,7 @@
         "guzzlehttp/guzzle": "^7.9",
         "psr/log": "^3.0",
         "monolog/monolog": "^3.9",
-        "illuminate/collections": "^12.36"
+        "illuminate/collections": "^12.36 || ^13.0"
     },
     "extra": {
         "examples-dir": "example"
